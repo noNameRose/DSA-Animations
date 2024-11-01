@@ -28,6 +28,7 @@ export default function Card({color, name, type, difficulty}) {
                     md:p-[2em]
                     w-[80%]
                     gap-3
+                  
                     "
           style={{
               backgroundColor: `${color}`,
