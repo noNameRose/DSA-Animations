@@ -3,11 +3,13 @@ export default function Tail() {
     <button className="
                     text-nodeText 
                       lg:text-lgFont
+                      md:text-mdFont
+                      sm:text-smFont
                       font-bold
                       bg-tail_head_theme
                       p-[0.5em]
-                      rounded-md
-                      border-[0.2em]
+                      rounded-sm
+                      border-chainThickNess
                       border-dashed
                       border-nodeBorderColor
                       tail

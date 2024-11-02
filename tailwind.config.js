@@ -8,9 +8,19 @@ export default {
     extend: {
     },
     fontSize: {
+
+      // This size for Linked List
       lgFont: "0.8rem",
       mdFont: "0.5rem",
       smFont: "0.3rem",
+
+      // This size for control and menu bar
+      lgMenuFont: "1.2rem",
+      mdMenuFont: "1rem",
+      smMenuFont: "0.8rem",
+
+
+
     },
     borderWidth: {
       chainThickNess: "0.27em",
@@ -30,6 +40,10 @@ export default {
       currentBorder: "#6d6192",
       previousTheme: "#303242",
       previousBorder: "#394359"
+    },
+    gap: {
+      gapHeadNode: "3em",
+      gapTailNode: "3em",
     },
     screens: {
       'sm': '640px',

@@ -4,13 +4,15 @@ export default function TravelNode({name}) {
                     p-[0.5em]
                     text-[white]
                     font-bold
-                    border-[0.3rem]
+                    border-chainThickNess
                     border-solid
                     rounded-sm
                     border-travel
                     absolute
                     z-100
                     lg:text-lgFont
+                    md:text-mdFont
+                    sm:text-smFont
                     `;
     let chainClassName = `  absolute
                             top-0

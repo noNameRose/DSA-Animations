@@ -42,8 +42,10 @@ export default function MainPage() {
               }}           
                          >
         </div>
-        <div className="flex flex-col gap-8">
-          <h1 className="font-bold text-mainText text-[1.5rem] text-center">Learn Data Structure and Algorithm effectively with animation</h1>
+        <div className="flex flex-col gap-[2rem]">
+            <h1 className="font-bold text-mainText text-[1.5rem] text-center">
+                Learn Data Structure and Algorithm effectively with animation
+            </h1>
             <button
                 className="bg-mainText 
                             p-[0.7em] 

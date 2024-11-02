@@ -12,6 +12,12 @@ import { createAnimationForTravelNode,
          changeNullStyle
         } from "./inforCode/anime.js";
 
+/**
+ * 
+ * @param {*} param0 
+ * @returns 
+ */
+
 export default function LinkedList({initialList, operation, onClean, controlDel, keys}) {
     const tl = useRef();    // gsap timeline is stored in ref
     let gap = 3.5;   // the gap between each node
@@ -38,7 +44,10 @@ export default function LinkedList({initialList, operation, onClean, controlDel,
             nodeWrappers.push(current.actualNode);
             nodes.push(current.actualNode.querySelector(".node"));
             let isInsertBetween = false;
-            if (operation.type === "insert" && !operation.index && !i && initialList.size > 1)
+            if (operation.type === "insert" // This operation is insert
+                && !operation.index    // Not insert at the beginning
+                && !i    
+                && initialList.size > 1)
                 x -= getNodeWidth(current.actualNode) + gap;
             if (operation.type === "insert" && operation.index < initialList.size - 1 && operation.index > 0) {
                 if (i == operation.index) {
@@ -55,55 +64,109 @@ export default function LinkedList({initialList, operation, onClean, controlDel,
             if (operation.type === "remove" && i >= operation.index + 1) {
                 nodesNeedToMove.push(current.actualNode);
             }
-            current.actualNode.style.left = x + "rem";
+            current.actualNode.style.left = x + "em";
                 leftPosLists.push(x);
             if (!isInsertBetween)
                 x += nodeWidth + gap;
             current = current.next;
             i++;
         }
-        let chainWidth; // the width of each connected chain between each node
-        if (!nodes.length)  // we the list is empty
+        // the width of each connected chain between each node
+        let chainWidth;
+        // If the list is empty
+        if (!nodes.length) 
             return;
-        if (nodes.length < 2)
+        // Special case where list has only 1 node
+        if (nodes.length < 2) {
+            // In this case, the length of chain will equal
+            // the width of node
             chainWidth = getNodeWidth(nodes[0]);
-        else
-            chainWidth = ((nodes[1].getBoundingClientRect().left - nodes[0].querySelector(".next").getBoundingClientRect().right)) / parseInt(getComputedStyle(nodes[0]).fontSize);
-        document.querySelectorAll(".chain").forEach(chain => chain.style.width = chainWidth + "rem");
-        let head = document.querySelector(".head"); // the head node
-        let tail = document.querySelector(".tail"); // the tail node
-        let headChain = (nodes[0].getBoundingClientRect().top - head.getBoundingClientRect().bottom) / parseInt(getComputedStyle(nodes[0]).fontSize);
-        let tailChain = (tail.getBoundingClientRect().top - nodes[nodes.length - 1].getBoundingClientRect().bottom) / parseInt(getComputedStyle(nodes[0]).fontSize);
-        head.querySelector(".vertical-chain").style.height = headChain + "rem";
-        tail.querySelector(".vertical-chain").style.height = tailChain + "rem";
-        let prev = document.querySelector(".Previous"); // previous travel node in case we need to travel
-        let cur = document.querySelector(".Current");   // current travel node in case we need to travel
-        let curChain;        // the height of the connected chain from current travel node to the current node it's checking
-        let prevChain;      // the height of the connected chain from previous travel node to the current node it's checking
-        let verDisToNullFromCur;   // vertical distance from current travel node to null
-        if (needTravelNode || isSearch) {   // only run if we need to travel
+        }
+        else  {
+            chainWidth = 
+                        ((nodes[1].getBoundingClientRect().left 
+                       - nodes[0].querySelector(".next").getBoundingClientRect().right)) 
+                       / parseInt(getComputedStyle(nodes[0]).fontSize);
+        }
+        console.log("Font size of each node: " + getComputedStyle(nodes[0]).fontSize);
+        console.log("The width of the chain: " + chainWidth);
+        // Set the width to all connected chain between each node
+        document.querySelectorAll(".chain").forEach(
+            chain => chain.style.width = chainWidth + "em");
+        // the head node
+        let head = document.querySelector(".head");
+        // the tail node
+        let tail = document.querySelector(".tail");
+        // the height of the chain that connect head
+        // to first node of the list
+        let headChain = 
+                        ( nodes[0].getBoundingClientRect().top 
+                        - head.getBoundingClientRect().bottom) 
+                        / parseInt(getComputedStyle(nodes[0]).fontSize);
+        // The height of the chain that connect head
+        // to the last node of the list
+        let tailChain = (tail.getBoundingClientRect().top 
+                       - nodes[nodes.length - 1].getBoundingClientRect().bottom)
+                       / parseInt(getComputedStyle(nodes[0]).fontSize);
+        // Set the height for the chain of the head node
+        head.querySelector(".vertical-chain").style.height = headChain + "em";
+        // Set the height for the chain of the tail node
+        tail.querySelector(".vertical-chain").style.height = tailChain + "em";
+        // ---------------------------------------------
+        // Previous travel node in case we need to travel
+        let prev = document.querySelector(".Previous"); 
+        // Current travel node in case we need to travel
+        let cur = document.querySelector(".Current");  
+        // the height of the connected chain from current travel node 
+        // to the current node it's checking
+        let curChain;        
+        // the height of the connected chain from previous travel node 
+        // to the current node it's checking
+        let prevChain;    
+        // vertical distance from current travel node to null
+        let verDisToNullFromCur;  
+          // only run if we need to travel
+        if (needTravelNode || isSearch) {
+            // Get the first node 
             let firstNode = nodes[0];
+            // Get the top coordinate of the first node
+            // on screen
             let top = getNodeHeight(firstNode);
+            // Get the left coordinate of the first node
+            // on screen
             let left = getNodeWidth(firstNode);
+            // Previous only appear on screen
+            // if we insert or remove at specific index
             if (prev) {
-                prev.style.top = top +  gap + "rem";
-                prev.style.left = -(left + gap) + "rem";
+                prev.style.top = top +  gap + "em";
+                prev.style.left = -(left + gap) + "em";
             }
+            // Current only appear on creen
+            // if we insert or remove at specifc index
             if (cur) {
-                cur.style.top = top + (2.5 * gap) + "rem";
-                curChain = (cur.getBoundingClientRect().top - nodes[0].getBoundingClientRect().bottom)/ parseInt(getComputedStyle(nodes[0]).fontSize);
+                cur.style.top = top + (2.5 * gap) + "em";
+                curChain = (cur.getBoundingClientRect().top 
+                          - nodes[0].getBoundingClientRect().bottom)
+                          / parseInt(getComputedStyle(nodes[0]).fontSize);
             }
             if (prev)
-                prevChain = (prev.getBoundingClientRect().top - nodes[0].getBoundingClientRect().bottom) / parseInt(getComputedStyle(nodes[0]).fontSize);
+                prevChain = (prev.getBoundingClientRect().top 
+                           - nodes[0].getBoundingClientRect().bottom) 
+                           / parseInt(getComputedStyle(nodes[0]).fontSize);
             if (cur)
-                cur.querySelector(".vertical-chain").style.height = curChain + 0.5 + "rem";
+                cur.querySelector(".vertical-chain").style.height = curChain + 0.5 + "em";
             let lastNode = nodes[i - 1];
-            verDisToNullFromCur = (cur.getBoundingClientRect().top - lastNode.querySelector(".null").getBoundingClientRect().bottom)/parseInt(getComputedStyle(lastNode).fontSize);
-            console.log(verDisToNullFromCur);
+            verDisToNullFromCur = (cur.getBoundingClientRect().top 
+                                - lastNode.querySelector(".null").getBoundingClientRect().bottom)
+                                 /parseInt(getComputedStyle(lastNode).fontSize);
         }
+        // ---------------------------------------------
         tl.current = gsap.timeline();
+        // If this operation is insertion
         if (operation.type === "insert") {
-            if (!operation.index) { // insert at the beginning of the list
+            // insert at the beginning of the list
+            if (!operation.index) {
+                // If the list is empty
                 if (initialList.size < 2) {
                     tl.current.from(nodes[0], {
                         y: "5rem",
@@ -126,7 +189,10 @@ export default function LinkedList({initialList, operation, onClean, controlDel,
                     }, "<")
                 }
                 else {
+                    // Make the null reference of next field 
+                    // invisible
                     nodes[0].querySelector(".null").style.opacity = 0;
+                    // Animation for insertion at the beginning
                     tl.current.from(nodes[0], {
                         opacity: 0,
                         y: "5rem",
@@ -135,16 +201,23 @@ export default function LinkedList({initialList, operation, onClean, controlDel,
                     }).to(head.querySelector(".vertical-chain"), {
                         height: 0,
                     }).from(head, {
-                        x: nodeWidth + gap + "rem",
+                        x: nodeWidth + gap + "em",
                     }).to(head.querySelector(".vertical-chain"), {
-                        height: headChain + "rem",
+                        height: headChain + "em",
                     });
-                    moveNodeToRight(tl.current, document.querySelectorAll(".node-wrapper"), gap);
+                    // Move all the node to the right for new node
+                    // at the beginning
+                    moveNodeToRight(tl.current, 
+                                    document.querySelectorAll(".node-wrapper"), 
+                                    gap);
                 }
-            }
-            else if (operation.index === initialList.size - 1) {    // insert at the end of the list
+            }   // insert at the end of the list
+            else if (operation.index === initialList.size - 1) {   
+                // Get the last node
                 let lastNode = nodes[nodes.length - 1];
+                // Get the node before the last node
                 let beforeLastNode = nodes[nodes.length - 2];
+                // Animation for insertation at the end of the list
                 tl.current.to(beforeLastNode.querySelector(".null"), {
                     y: "5rem",
                     opacity: 0,
@@ -163,39 +236,57 @@ export default function LinkedList({initialList, operation, onClean, controlDel,
                 }).to(tail.querySelector(".vertical-chain"), {
                     height: 0,
                 }).from(tail, {
-                    x: -(getNodeWidth(beforeLastNode) + gap) + "rem",
+                    x: -(getNodeWidth(beforeLastNode) + gap) + "em",
                 }).to(tail.querySelector(".vertical-chain"), {
-                    height: tailChain + "rem",
+                    height: tailChain + "em",
                 })
-            }
-            else {  // insert at a specific index
-                let i = createAnimationForTravelNode(operation.type, tl.current, prev, prevChain, cur, curChain, operation.index, nodes, leftPosLists);
+            } // insert at a specific index
+            else { 
+                // Animation for current and previous
+                // until they reach the insertion point
+                let i = createAnimationForTravelNode(operation.type, 
+                                                    tl.current, 
+                                                    prev, 
+                                                    prevChain, 
+                                                    cur, 
+                                                    curChain,
+                                                    operation.index, 
+                                                    nodes, 
+                                                    leftPosLists);
+                // Animation for moving node to the right
                 moveNodeToRight(tl.current, nodesNeedToMove, gap);
+                // 
                 tl.current.to(nodes[i - 1].querySelector(".chain"), {
-                    width: chainWidth + getNodeWidth(nodes[i - 1]) + gap + "rem",
+                    width: chainWidth + getNodeWidth(nodes[i - 1]) + gap + "em",
                 }, "<");
                 let lastNode = nodes[nodes.length - 1];
                 let yDis = getNodeHeight(nodes[i]);
                 tl.current.to(cur, {
-                    x: getNodeWidth(lastNode) + gap + "rem",
+                    x: getNodeWidth(lastNode) + gap + "em",
                 }, "<").to(nodes[i - 1].querySelector(".chain"), {
                     width: 0,
                 }, "+=0.5").from(nodes[i], {
-                    y: yDis + gap + "rem",
+                    y: yDis + gap + "em",
                     opacity: 0,
                     duration: 1,
                 }).from(nodes[i].querySelector(".chain"), {
                     width: 0,
                 }, "+=0.5").to(nodes[i - 1].querySelector(".chain"), {
-                    width: chainWidth + "rem",
+                    width: chainWidth + "em",
                 }, "+=0.2").to(prev.querySelector(".vertical-chain"), {
                     height: 0,
                 }, "+=0.5")
-                changeNodeSyleAnimation(tl.current, nodes[i - 1],styles["node-initial-style"], styles["node-content-initial-style"], "<");
+                changeNodeSyleAnimation(tl.current, nodes[i - 1],
+                                        styles["node-initial-style"], 
+                                        styles["node-content-initial-style"], 
+                                        "<");
                 tl.current.to(cur.querySelector(".vertical-chain"), {
                     height: 0,
                 }, "<");
-                changeNodeSyleAnimation(tl.current, nodes[i + 1], styles["node-initial-style"],styles["node-content-initial-style"], "<");
+                changeNodeSyleAnimation(tl.current, nodes[i + 1], 
+                                        styles["node-initial-style"],
+                                        styles["node-content-initial-style"],
+                                         "<");
                 tl.current.to([prev, cur], {
                     y: "5rem",
                     opacity: 0,
@@ -205,28 +296,42 @@ export default function LinkedList({initialList, operation, onClean, controlDel,
                 })
                 ;
             }
-        }
+        }  // This operation is deletion
         else if (operation.type === "remove") { 
+            // If this is the second render
+            // after remove is complete
             if (!controlDel.current) {
                 return;
             }
-            if (!operation.index) { // remove at the beginning of the list
+            // Remove at the beginning of the list
+            if (!operation.index) {
+                // If the number of node in the list is greater than 1
                 if (initialList.size > 1) {
+                    // Make the null reference of the first node
+                    // become invisible before we delete it
                     nodes[0].querySelector(".null").style.opacity = 0;
+                    // Animation for removing the first node
                     tl.current.to(head.querySelector(".vertical-chain"), {
                         height: 0,
                     }).to(head, {
-                        x: nodeWidth + gap + "rem",
+                        x: nodeWidth + gap + "em",
                     }).to(head.querySelector(".vertical-chain"), {
-                        height: headChain + "rem",
+                        height: headChain + "em",
                     }).to(nodes[0].querySelector(".chain"), {
                         width: 0,
                     }).to(nodes[0], {
                         y: "5rem",
                         opacity: 0,
                     });
-                    let restOfTheList = Array.from(document.querySelectorAll(".node-wrapper")).filter((node, index) => index != 0);
+                    // The rest of the list after
+                    // the first node is removed
+                    let restOfTheList = Array.from(
+                                                document.querySelectorAll(".node-wrapper")
+                                            ).filter((node, index) => index != 0);
+                    // Animation for moving all the node of the list to the left
                     moveNodeToLeft(tl.current, restOfTheList, gap);
+                    // Animation for moving head 
+                    // to the new first node of the list
                     tl.current.to(head, {
                         x: 0,
                         onComplete: () => {
@@ -235,8 +340,10 @@ export default function LinkedList({initialList, operation, onClean, controlDel,
                         }
                     }, "<")
                 }
-            }
-            else { // remove at a speciffic index
+            }   // remove at a speciffic index
+            else { 
+                // Animation for moving previous node 
+                // and current to the deletion point
                 let i = createAnimationForTravelNode(operation.type, 
                                             tl.current, 
                                             prev, 
@@ -245,21 +352,29 @@ export default function LinkedList({initialList, operation, onClean, controlDel,
                                             operation.index, 
                                             nodes, 
                                             leftPosLists);
+                // The deleted node on screen
                 let deleteNode = nodeWrappers[i];
+                // The node that located before deleted node
                 let nodeBeforeDeleteNode = nodeWrappers[i - 1];
-                let nodeAfterDeleteNode = (i + 1 < nodes.length) ? nodes[i + 1] : null;
+                // The node that located after deleted node
+                let nodeAfterDeleteNode = (i + 1 < nodes.length) 
+                                            ? nodes[i + 1] 
+                                            : null; // This is deletion at the end of the list
+                                                    // since we don't have the node after deleted node
                 nodeBeforeDeleteNode.querySelector(".null").style.opacity = 0;
+                // If this is deletion in some node in the middle 
+                // of the list but not the last position
                 if (nodeAfterDeleteNode)
                     deleteNode.querySelector(".null").style.opacity = 0;
                 tl.current.to(nodeBeforeDeleteNode.querySelector(".chain"), {
                     width: 0,
                 }).to(deleteNode, {
-                    y: getNodeHeight(deleteNode) + "rem",
+                    y: getNodeHeight(deleteNode) + "em",
                 }).to(cur, {
-                    y: getNodeHeight(deleteNode) + "rem",
+                    y: getNodeHeight(deleteNode) + "em",
                 }, "<");
                 tl.current.to(deleteNode.querySelector(".chain"), {
-                    width: Math.sqrt(getNodeHeight(deleteNode)**2 + chainWidth**2) + "rem",
+                    width: Math.sqrt(getNodeHeight(deleteNode)**2 + chainWidth**2) + "em",
                     transformOrigin: "top left",
                     rotate: `-${Math.atan(getNodeHeight(deleteNode)/chainWidth)}rad`
                 }, "<");
@@ -270,7 +385,7 @@ export default function LinkedList({initialList, operation, onClean, controlDel,
                     }, "<");
                 }
                 tl.current.to(nodeBeforeDeleteNode.querySelector(".chain"), {
-                    width: chainWidth + getNodeWidth(nodeBeforeDeleteNode) + gap + "rem",
+                    width: chainWidth + getNodeWidth(nodeBeforeDeleteNode) + gap + "em",
                 })
                 if (!nodeAfterDeleteNode) {
                     tl.current.set(nodeBeforeDeleteNode.querySelector(".null"), {
@@ -297,11 +412,11 @@ export default function LinkedList({initialList, operation, onClean, controlDel,
                     tl.current.to(tail.querySelector(".vertical-chain"), {
                         height: 0,
                     }).to(tail, {
-                        x: -(nodeWidth + gap) + "rem",
+                        x: -(nodeWidth + gap) + "em",
                     }).to(tail, {
-                        y: -getNodeHeight(deleteNode) + "rem",
+                        y: -getNodeHeight(deleteNode) + "em",
                     }).to(tail.querySelector(".vertical-chain"), {
-                        height: tailChain + "rem",
+                        height: tailChain + "em",
                     })
                 }
                 tl.current.to(nodes[i], {
@@ -310,15 +425,15 @@ export default function LinkedList({initialList, operation, onClean, controlDel,
                 });
                 moveNodeToLeft(tl.current, nodesNeedToMove, gap);
                 tl.current.to(nodeBeforeDeleteNode.querySelector(".chain"), {
-                    width: chainWidth + "rem",
+                    width: chainWidth + "em",
                     onComplete: () => {
                         controlDel.current = false;
                         operation.onDelete();
                     }
                 }, "<");
             }
-        }
-        else if (operation.type === "search"){  // search for specific value
+        }  // search for specific value
+        else if (operation.type === "search"){ 
             let targetIndex = (operation.index !== -1) ? operation.index : initialList.size - 1;
             let i = 0;
             let no = nodes[targetIndex].querySelector(".null");
@@ -328,35 +443,45 @@ export default function LinkedList({initialList, operation, onClean, controlDel,
                 height: 0,
             });
             while (i <= targetIndex) {
-                changeNodeSyleAnimation(tl.current, nodes[i], styles["node-current-visit-style"], styles["node-content-current-visit-style"]);
+                changeNodeSyleAnimation(tl.current, nodes[i], 
+                                        styles["node-current-visit-style"], 
+                                        styles["node-content-current-visit-style"]);
                 if (i + 1 <= targetIndex) {
                     tl.current.to(cur.querySelector(".vertical-chain"), {
                         height: 0,
                     });
-                    changeNodeSyleAnimation(tl.current, nodes[i], styles["node-initial-style"], styles["node-content-initial-style"], "<");
+                    changeNodeSyleAnimation(tl.current, nodes[i], 
+                                            styles["node-initial-style"], 
+                                            styles["node-content-initial-style"], 
+                                            "<");
                 }
                 i++;
                 if (i <= targetIndex) {
                     tl.current.to(cur, {
-                        left: leftPosLists[i] + "rem",
+                        left: leftPosLists[i] + "em",
                     }).to(cur.querySelector(".vertical-chain"), {
-                        height: curChain + 0.5 +  "rem",
+                        height: curChain + 0.5 +  "em",
                     })
                 }
             }
+            // The value we are looking for in the list
+            // is not in the list => index is -1 in this case
             if (operation.index === -1) {
                 tl.current.to(cur.querySelector(".vertical-chain"), {
                     height: 0,
                 });
-                changeNodeSyleAnimation(tl.current, nodes[targetIndex], styles["node-initial-style"], styles["node-content-initial-style"], "<");
+                changeNodeSyleAnimation(tl.current, nodes[targetIndex], 
+                                        styles["node-initial-style"],
+                                         styles["node-content-initial-style"],
+                                          "<");
                 let disToNull = leftPosLists[targetIndex] 
                                 + getNodeWidth(nodes[targetIndex]) 
-                                + gap
-                                - 2;
+                                + gap 
+                                - 1;
                 tl.current.to(cur, {
-                    left: disToNull + "rem",
+                    left: disToNull + "em",
                 }).to(cur.querySelector(".vertical-chain"), {
-                    height: verDisToNullFromCur + 0.5 + "rem",
+                    height: verDisToNullFromCur + 0.5 + "em",
                 });
                 changeNullStyle(tl.current, no, styles["null-visit-style"]);
             }
@@ -384,7 +509,13 @@ export default function LinkedList({initialList, operation, onClean, controlDel,
 
     return (
 
-        <div className={`absolute left-[25vh] top-[15vh]`}>
+        <div className={`absolute   
+                        left-[25vh] 
+                        top-[15vh]
+                        lg:text-lgFont
+                        md:text-mdFont
+                        sm:text-smFont
+                        `}>
             <div className="relative"
                  style={{
                         //  gap: `${gap}rem`

@@ -29,9 +29,9 @@ export function createAnimationForTravelNode(type, tl, prev, prevChain, cur, cur
     while (i < index) {
         if (i === 0) {
             tl.to(prev, {
-                left: leftPosLists[i] + "rem",
+                left: leftPosLists[i] + "em",
             }).to(prev.querySelector(".vertical-chain"), {
-                height: prevChain + 0.5 + "rem",
+                height: prevChain + 0.5 + "em",
             });
         }
         else {
@@ -40,18 +40,21 @@ export function createAnimationForTravelNode(type, tl, prev, prevChain, cur, cur
             });
             changeNodeSyleAnimation(tl, nodes[i - 1], styles["node-initial-style"], styles["node-content-initial-style"], "<");
             tl.to(prev, {
-                left: leftPosLists[i] + "rem",
+                left: leftPosLists[i] + "em",
             }).to(prev.querySelector(".vertical-chain"), {
-                height: prevChain + 0.5 + "rem",
+                height: prevChain + 0.5 + "em",
             });
         }
-        changeNodeSyleAnimation(tl, nodes[i], styles["node-previous-visit-style"], styles["node-content-previous-visit-style"]);
+        changeNodeSyleAnimation(tl, 
+                                nodes[i], 
+                                styles["node-previous-visit-style"], 
+                                styles["node-content-previous-visit-style"]);
         tl.to(cur.querySelector(".vertical-chain"), {
             height: 0,
         }).to(cur, {
-            left: leftPosLists[i + 1] + "rem",
+            left: leftPosLists[i + 1] + "em",
         }).to(cur.querySelector(".vertical-chain"), {
-            height: curChain + 0.5 + "rem",
+            height: curChain + 0.5 + "em",
         });
         if (i + 1 === index && type === "insert") {
             changeNodeSyleAnimation(tl, nodes[i + 2], styles["node-current-visit-style"], styles["node-content-current-visit-style"]);
@@ -73,7 +76,7 @@ export function moveNodeToRight(tl, nodes, gap) {
     nodes.forEach(node => {
         let nodeWidth = getNodeWidth(node);
         tl.to(node, {
-            left:(parseFloat(node.style.left) + nodeWidth + gap) + "rem" ,
+            left:(parseFloat(node.style.left) + nodeWidth + gap) + "em" ,
         }, "<");
     });
 }
@@ -82,7 +85,7 @@ export function moveNodeToLeft(tl, nodes, gap) {
     nodes.forEach(node => {
         let nodeWidth = getNodeWidth(node);
         tl.to(node, {
-            left:(parseFloat(node.style.left) - nodeWidth - gap) + "rem" ,
+            left:(parseFloat(node.style.left) - nodeWidth - gap) + "em" ,
             ease: "power4.out",
             duration: 1,
         }, "<")

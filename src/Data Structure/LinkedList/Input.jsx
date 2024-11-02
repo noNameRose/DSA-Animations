@@ -16,13 +16,16 @@ export default function Input({name, needValue, needIndex, onStart}) {
     })
   }
   return (
-    <div className="flex items-center gap-5 lg:text-[1rem]">
+    <div className="flex items-center gap-5 ">
       <button className="
                       text-inputTextColor 
                       p-[0.7em] 
                       bg-buttonTheme 
                       rounded-sm
                       font-bold
+                      lg:text-lgMenuFont
+                      md:text-mdFont
+                      sm:text-smFont
                       "
                       onPointerOver={handleHover}
                       onPointerOut={handleOut}
@@ -30,19 +33,39 @@ export default function Input({name, needValue, needIndex, onStart}) {
       </button>
       <div className="inline-flex gap-5 items-center">
         {needValue && ( <label className="flex gap-2">
-                          <pre className="text-inputTextColor font-bold">Value = </pre>
+                          <pre className="text-inputTextColor 
+                                            font-bold
+                                            lg:text-lgMenuFont
+                                            md:text-mdFont
+                                            sm:text-smFont
+                                            ">Value = </pre>
                           <input
                             value={value}
                             onChange={e => setValue(e.target.value)}
-                            className="max-w-[3rem] min-h-full"
+                            className="max-w-[3rem] 
+                                      min-h-full
+                                      lg:text-lgMenuFont
+                                      md:text-mdFont
+                                      sm:text-smFont
+                                      "
                           />
                         </label>)}
         {needIndex && ( <label className="flex gap-2">
-                          <pre className="text-inputTextColor font-bold">Index = </pre>
+                          <pre className="text-inputTextColor 
+                                            font-bold
+                                            lg:text-lgMenuFont
+                                            md:text-mdFont
+                                            sm:text-smFont
+                                            
+                                            ">Index = </pre>
                             <input
                               value={index}
                               onChange={e => setIndex(e.target.value)}
-                              className="max-w-[3rem]"
+                              className=" max-w-[3rem]
+                                          lg:text-lgMenuFont
+                                          md:text-mdFont
+                                          sm:text-smFont
+                                        "
                             />
                           </label>)}
         <button className="
@@ -51,6 +74,9 @@ export default function Input({name, needValue, needIndex, onStart}) {
                   bg-buttonTheme 
                     rounded-sm
                     font-bold
+                    lg:text-lgMenuFont
+                    md:text-mdFont
+                    sm:text-smFont
                     "
                 onClick={() => {
                   onStart(name.toLowerCase(), {

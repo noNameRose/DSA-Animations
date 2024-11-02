@@ -6,9 +6,6 @@ import Head from "./Head.jsx";
 
 export default function Node({value, index, node, isTail, isHead}) {
     const ref = useRef(null);
-    let className = "flex items-center gap-12";
-    if (isTail)
-        className += " flex-col";
     useEffect(() => {
         node.actualNode = ref.current;
         return () => {
@@ -16,25 +13,48 @@ export default function Node({value, index, node, isTail, isHead}) {
         }
     }, [node]);
     return (
-        <div className="flex flex-col items-center gap-12 node-wrapper absolute" ref={ref}>
+        <div className="node-wrapper 
+                        flex 
+                        flex-col 
+                        items-center 
+                        gap-gapHeadNode
+                        absolute
+                        lg:text-lgFont
+                        md:text-mdFont
+                        sm:text-smFont
+                        " 
+            ref={ref}>
             {isHead && <Head/>}
-            <div className="inline-flex 
+            <div className="
+                            node
+                            inline-flex 
                             flex-col 
                             bg-nodeTheme 
                             items-center 
                             p-[1.5em] 
-                            gap-5 
+                            gap-[1em]
                             rounded-md
                             border-[0.3em] 
                             border-dashed 
                             border-nodeBorderColor
-                            node
-                            lg:text-lgFont
                             "
                 >
                 <p className="text-nodeText font-bold">{index}</p>
-                <button className="text-nodeText p-[0.2em] bg-contentThem self-stretch rounded-sm font-bold">{value}</button>
-                <button className="text-nodeText p-[0.2em] bg-contentThem rounded-sm relative next font-bold">
+                <button className="text-nodeText 
+                                     p-[0.2em] 
+                                     bg-contentThem 
+                                     self-stretch 
+                                     rounded-sm 
+                                     font-bold">
+                                        {value}
+                </button>
+                <button className="text-nodeText 
+                                     p-[0.2em] 
+                                     bg-contentThem 
+                                     rounded-sm 
+                                     relative 
+                                     next 
+                                     font-bold">
                     Next
                     <div className="chain
                                     absolute 
@@ -42,7 +62,7 @@ export default function Node({value, index, node, isTail, isHead}) {
                                     left-full 
                                     border-t-chainThickNess
                                     border-dashed
-                                border-nodeBorderColor"    
+                                 border-nodeBorderColor"    
                     >
                         <div
                             className="bg-nullTheme 

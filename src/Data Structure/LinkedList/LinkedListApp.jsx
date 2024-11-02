@@ -23,7 +23,7 @@ export default function LinkedListApp() {
       document.body.style.backgroundColor = "";
     }
   }, [backGroundChnage]);
-  
+
   function handleCleanUpTravel() {
     setOperation({type: "clean"});
   }
@@ -74,7 +74,10 @@ export default function LinkedListApp() {
     }
   }
   return (
-    <>
+    <div className="
+                    lg:text-lgFont
+                    md:text-mdFont
+                  ">
       <LinkedList initialList={list} 
                   operation={operation} 
                   onClean={handleCleanUpTravel}
@@ -82,7 +85,7 @@ export default function LinkedListApp() {
                   keys={keys.current}
                   />
       <Menu onStart = {handleStart}/>
-    </>
+    </div>
   );
 }
 

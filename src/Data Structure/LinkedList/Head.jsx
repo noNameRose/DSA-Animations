@@ -3,26 +3,25 @@ export default function Head() {
     <button
         className="
         text-nodeText 
-          lg:text-lgFont
           font-bold
           bg-tail_head_theme
           p-[0.5em]
-          rounded-md
-          border-[0.2em]
+          rounded-sm
+          border-chainThickNess
           border-dashed
           border-nodeBorderColor
           head
           self-center
           absolute
           bottom-full
-          mb-[3rem]
+          mb-[3em]
           "
     >
       Head
       <div
         className="
                   absolute
-                  border-l-[0.25em]
+                  border-l-chainThickNess
                   border-dashed
                   border-nodeBorderColor
                   vertical-chain
