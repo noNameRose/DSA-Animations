@@ -7,10 +7,12 @@ export default function Navigation() {
                     p-[2em] 
                     max-w-screen-2xl
                     mx-auto
-                    text-mainText
+                    text-[white]
+                    gap-[2em]
+                    bg-navBarColor
                     ">
       <p className="font-bold text-[1.5rem] ">DSA Animation</p>
-      <div className="sm:flex items-center gap-8 hidden">
+      <div className="sm:flex items-center gap-[1em] hidden">
         <AnimationButton name="Data Structure and Algorithm" color="#113C51"/>
         <AnimationButton name="Feed back" color="#113C51"/>
       </div>

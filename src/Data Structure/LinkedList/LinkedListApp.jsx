@@ -28,9 +28,20 @@ export default function LinkedListApp() {
     setOperation({type: "clean"});
   }
 
+  /**
+   * This function handle the case when user click start button 
+   * 
+   * @param {*} operations 
+   * @param {*} action 
+   * @returns 
+   */
   function handleStart(operations, action) {
+    // The index where the action happen.
+    // It could be remove at or insert at i
     let i = action.index
+    // If this is insertion
     if (operations === "insert(i)") {
+      // 
       let newOprations = {
         ...operation,
         type: "insert",

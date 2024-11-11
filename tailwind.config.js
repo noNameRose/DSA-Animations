@@ -9,6 +9,9 @@ export default {
     },
     fontSize: {
 
+      //This size for mainpage
+     
+
       // This size for Linked List
       lgFont: "0.8rem",
       mdFont: "0.5rem",
@@ -26,7 +29,12 @@ export default {
       chainThickNess: "0.27em",
     },
     colors: {
-      mainText: "#113C51",
+      mainText: "#2a2438",
+      navBarColor: "#2a2438",
+      mainPageColor: "#dbd8e3",
+
+
+
       buttonHover: "#477186",
       nodeTheme: "#113C51",
       nodeText: "white",
@@ -39,13 +47,32 @@ export default {
       currentTheme: "#352d4d",
       currentBorder: "#6d6192",
       previousTheme: "#303242",
-      previousBorder: "#394359"
+      previousBorder: "#394359",
+
+
+      //Stack
+      stackMainTheme: "08073B",
+      stackMenuText: "#774936",
+      stackInputText: "#edc4b3",
+      stackMenuButton: "#9d6b53",
+
+      stackNodeTheme: "#9d6b53",
+      stackNodeText: "#774936",
+      stackNodeBorder: "#c38e70",
+      stackBorderColor: "#cd9777"
     },
     gap: {
       gapHeadNode: "3em",
       gapTailNode: "3em",
     },
     screens: {
+
+      'xsm': '0px',
+       // => @media (min-width: 640px) { ... }
+
+      'hsm': '320px',
+      // => @media (min-width: 640px) { ... }
+      
       'sm': '640px',
       // => @media (min-width: 640px) { ... }
 

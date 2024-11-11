@@ -22,17 +22,22 @@ export default function MainPage() {
                     flex-col 
                     justify-center
                     md:flex-row
-                    sm:p-[5em]
-                    p-0
-                    pt-10
+                    p-[5em]
+                    md:p-[7em]
+                    sm:pr-[2em]
+                    sm:pl-[2em]
                     items-center
-                    gap-[5rem]
                     max-w-max
                     m-auto
+                    xsm:text-[0.5rem]
+                    hsm:text-[0.7rem]
+                    sm:text-[1rem]
+                    gap-[3em]
+                    bg-mainPageColor
                     ">
         <div className='
-                        w-[30rem]
-                        h-[30rem] 
+                        w-[30em]
+                        h-[30em] 
                         bg-contain 
                         bg-no-repeat
                          '
@@ -42,21 +47,29 @@ export default function MainPage() {
               }}           
                          >
         </div>
-        <div className="flex flex-col gap-[2rem]">
-            <h1 className="font-bold text-mainText text-[1.5rem] text-center">
+        <div className="flex flex-col gap-[2em]">
+            <h1 className="font-bold 
+                          text-mainText 
+                          text-center 
+                          text-[1.5rem]
+                          pr-[1em]
+                          pl-[1em]
+                          ">
                 Learn Data Structure and Algorithm effectively with animation
             </h1>
             <button
                 className="bg-mainText 
-                            p-[0.7em] 
-                            pl-[5em]
-                            pr-[5em]
-                            text-[1.5rem]
                             rounded-md
                             text-[white]
                             font-bold
                             relative
                             self-center
+                            fasdf
+                            p-[0.5em]
+                            pl-[5em]
+                            pr-[5em]
+                            text-[1rem]
+                            sm:text-[1.5rem]
                             "
                 ref={button}
             >
