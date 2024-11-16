@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react"
 import StackComponent from "./StackComponent.jsx";
-import Menu from "./Control/Menu.jsx"
+import Menu from "../Control/Menu.jsx"
 import { useOrientation } from "react-use";
 import { Stack } from "./InforCode/Stack.jsx";
+import { infor } from "../../DSA-infor/dsaInfor.js";
 
 const st = new Stack(15);
 const trashStack = new Stack(15);
@@ -37,6 +38,15 @@ export default function StackApp() {
         })
     }
 
+    function handleEmptyTrash() {
+        let newStack = operation.stk.clone();
+        setOperation({
+                    stk: newStack,
+                    trashStk: new Stack(15),
+                    name: "normal",
+        })
+    }
+
     function handleStart(operationName, action) {
         let newStack = operation.stk.clone();
         let newTraskStk = operation.trashStk.clone();
@@ -59,6 +69,15 @@ export default function StackApp() {
             };
             setOperation(newOperation);
         }
+        else if (operationName === "emptyTrash") {
+            let newOperation = {
+                stk: newStack,
+                trashStk: newTraskStk,
+                name: operationName,
+            };
+            setOperation(newOperation);
+        }
+        
     }
 
     useEffect(() => {
@@ -69,16 +88,24 @@ export default function StackApp() {
     });
     return (
         <>
-            {(type === 'landscape-primary') || (type === "landscap-secondary") ? (<>
-                                                <StackComponent 
-                                                                operation={operation} 
-                                                                onPop={handlePop}
-                                                                onPush={handlePush}
-                                                                />
-                                                <Menu onStart={handleStart} isAnimating={operation.name !== "normal"}/>
-                                            </>
-                                            ) : (<div>You are in portrait mode</div>)
-                                            }
+            <div className="flex justify-center">
+                {(type === 'landscape-primary') || (type === "landscap-secondary") ? (<>
+                                                    <StackComponent 
+                                                                    operation={operation} 
+                                                                    onPop={handlePop}
+                                                                    onPush={handlePush}
+                                                                    onEmptyTrash={handleStart}
+                                                                    cleanEmptyTrash={handleEmptyTrash}
+                                                                    />
+                                                </>
+                                                ) : (<div>You are in portrait mode</div>)
+                                                }
+            </div>
+            <Menu onStart={handleStart} 
+                isAnimating={operation.name !== "normal"}
+                color={infor.Stack.menu.color}
+                methods={infor.Stack.menu.method}
+            />
         </>
     )
 }

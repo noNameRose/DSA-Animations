@@ -1,8 +1,10 @@
 import LinkedList from "./LinkedList.jsx";
 import Sll from "./inforCode/LinkedList.jsx";
-import Menu from "./Menu.jsx";
 import { useState, useRef, useEffect } from "react";
 import { RandomKey } from "./inforCode/RandomKey.js";
+import Menu from "../Control/Menu.jsx";
+import { infor } from "../../DSA-infor/dsaInfor.js";
+import { useOrientation } from "react-use";
 
 let randomKeys = new RandomKey(20);
 const initialList = new Sll();
@@ -16,6 +18,7 @@ export default function LinkedListApp() {
   const isDel = useRef(true);
   const keys = useRef(randomKeys);
   const backGroundChnage = true;
+  const {type} = useOrientation();
 
   useEffect(() => {
     document.body.style.backgroundColor = "#032536";
@@ -89,13 +92,26 @@ export default function LinkedListApp() {
                     lg:text-lgFont
                     md:text-mdFont
                   ">
-      <LinkedList initialList={list} 
-                  operation={operation} 
-                  onClean={handleCleanUpTravel}
-                  controlDel={isDel}
-                  keys={keys.current}
-                  />
-      <Menu onStart = {handleStart}/>
+      {(type === "landscape-primary") || (type === "landscape-secondary") ? 
+                  (<>
+                      <LinkedList initialList={list} 
+                                  operation={operation} 
+                                  onClean={handleCleanUpTravel}
+                                  controlDel={isDel}
+                                  keys={keys.current}
+                                  />
+                      <Menu onStart = {handleStart}
+                            isAnimating={false}
+                            color={infor.LinkedList.menu.color}
+                            methods={infor.LinkedList.menu.method}
+                            // plainTextColor="white"
+                            // methodButColor="#477186"
+                            // methodTextColor="white"
+                            // startButColor="#477186"
+                            // startButText="white"
+                      />
+                    </>) : (<div>You are in portrait mode</div>)
+                    }
     </div>
   );
 }

@@ -55,11 +55,13 @@ export default {
       stackMenuText: "#774936",
       stackInputText: "#edc4b3",
       stackMenuButton: "#9d6b53",
+      stackMenuTheme: "#b07d62",
 
       stackNodeTheme: "#9d6b53",
       stackNodeText: "#774936",
       stackNodeBorder: "#c38e70",
-      stackBorderColor: "#cd9777"
+      stackBorderColor: "#cd9777",
+      stackButtonShadow: "#9d6b53",
     },
     gap: {
       gapHeadNode: "3em",
