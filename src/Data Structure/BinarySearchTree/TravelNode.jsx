@@ -1,11 +1,11 @@
-export default function TravelNode({infor, reference, lineRef}) {
+export default function TravelNode({infor, wrapperRef, lineRef, curNodeRef}) {
     const {name, bg, borderColor, textColor} = infor;
     return (
         <div    className="absolute
                          transform
                         -translate-y-[200%]
                         -translate-x-[0.9em]" 
-                ref={reference}>
+                ref={wrapperRef}>
             <div    
                     className="
                             p-[0.3em]
@@ -18,6 +18,7 @@ export default function TravelNode({infor, reference, lineRef}) {
                             border: `0.2em solid ${borderColor}`
                         }
                     }
+                    ref={curNodeRef}
             >
                 {name}
             </div>

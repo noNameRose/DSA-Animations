@@ -1,10 +1,10 @@
-import img from "../assets/linkedlist.png"
+
 import { useGSAP } from "@gsap/react"
 import { useRef } from "react"
 import gsap from "gsap"
 
 
-export default function Card({color, name, type, difficulty}) {
+export default function Card({color, name, type, difficulty, img}) {
   const card = useRef(null);
   useGSAP(() => {
     let tl = gsap.timeline({paused: true}).to(card.current, {

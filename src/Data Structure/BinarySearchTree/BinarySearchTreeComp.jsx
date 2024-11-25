@@ -10,6 +10,7 @@ import {styles} from "./inofrCode/colorState.js";
 export default function BinarySearchTreeComp({operation}) {
     const {tree, name} = operation;
     const treeList = [];
+    const domWrapper = useRef(null);
     const domCurNode = useRef(null);
     const dis_bet_node_travelNode = useRef(null);
     const connectedLine = useRef(null);
@@ -27,39 +28,44 @@ export default function BinarySearchTreeComp({operation}) {
         else if (name === "search") {
             if (tree.isEmpty())
                 return;
-            const {visitedNodes, found} = tree.search(operation.searchTarget);
+            const target = operation.searchTarget;
+            const {visitedNodes, found} = tree.search(target);
             const root = visitedNodes[0].actualNode;
+            const n = visitedNodes.length;
             const {left: rl, top: rt} = root.getBoundingClientRect();
+            const curNodeWrapper = domWrapper.current;
             const curNode = domCurNode.current;
-            curNode.style.left = 0;
-            curNode.style.top = 0;
+            curNodeWrapper.style.left = 0;
+            curNodeWrapper.style.top = 0;
             if (dis_bet_node_travelNode.current === null) {
-                dis_bet_node_travelNode.current = Math.abs(rt - curNode.getBoundingClientRect().bottom);
-                dis_bet_node_travelNode.current /= parseFloat(getComputedStyle(curNode).fontSize);
+                dis_bet_node_travelNode.current = Math.abs(rt - curNodeWrapper.getBoundingClientRect().bottom);
+                dis_bet_node_travelNode.current /= parseFloat(getComputedStyle(curNodeWrapper).fontSize);
             }
             connectedLine.current.style.height = dis_bet_node_travelNode.current + "em";
-            tl.current.from(curNode, {
+            tl.current.from(curNodeWrapper, {
                 opacity: 0,
                 y: "-1em",
             }).from(connectedLine.current, {
                 height: 0,
             } );
             animeStyle(root, styles["node-current-visit-style"], tl.current);
-            tl.current.to(curNode, {
-                scale: 0,
-                transformOrigin: "center center",
-            }).to(curNode, {
-                y: "10px",
-            }, "<");
             let previousVal = visitedNodes[0].value;
             let previousNode = visitedNodes[0];
-            for (let i = 1; i < visitedNodes.length; i++) {
+            for (let i = 1; i < n; i++) {
+                tl.current.to(curNode, {
+                    scale: 0,
+                    transformOrigin: "bottom center",
+                    delay: "0.5",
+                }).to(connectedLine.current, {
+                    scale: 0,
+                    transformOrigin: "bottom center",
+                });
                 let currentVal = visitedNodes[i].value;
                 let connector = previousNode.leftConnector;
                 let chain = previousNode.leftVirtualLine;
-                const node =visitedNodes[i].actualNode;
+                const node = visitedNodes[i].actualNode;
                 const {left: nl, top: nt} = node.getBoundingClientRect();
-                const nodeFS = parseFloat(getComputedStyle(curNode).fontSize);
+                const nodeFS = parseFloat(getComputedStyle(curNodeWrapper).fontSize);
                 const y = (nt - rt)/nodeFS;
                 const x = (nl - rl)/nodeFS;
                 if (currentVal >= previousVal) {
@@ -75,16 +81,59 @@ export default function BinarySearchTreeComp({operation}) {
                 animeStyle(node, 
                             styles["node-current-visit-style"], 
                             tl.current);
-                tl.current.set(curNode, {
+                tl.current.set(curNodeWrapper, {
                     y: "-200%",
                     left: x + "em",
                     top: y + "em",
                     scale: 1,
-                }).from(connectedLine.current, {
-                    height: 0,
+                }).to(connectedLine.current, {
+                    scale: 1,
+                    transformOrigin: "bottom center",
+                }).to(curNode, {
+                    scale: 1,
+                    transformOrigin: "bottom center",
                 });
                 previousNode = visitedNodes[i];
                 previousVal = currentVal;
+            }
+            if (!found) {
+                tl.current.to(curNode, {
+                    scale: 0,
+                }).to(connectedLine.current, {
+                    scale: 0,
+                });
+                const finalNode = visitedNodes[n - 1];
+                let lastValCheck = finalNode.value;
+                let finalConnector = finalNode.leftConnector;
+                let finalChain = finalNode.leftVirtualLine;
+                let nullNode = finalNode.nullLeft;
+                let nullpos = finalNode.nullLeftPos;
+                if (target >= lastValCheck) {
+                    finalConnector = finalNode.rightConnector;
+                    finalChain = finalNode.rightVirtualLine;
+                    nullNode = finalNode.nullRight;
+                    nullpos = finalNode.nullRightPos;
+                }
+                animeStyle(finalConnector, 
+                    styles["connector-current-visit-style"],
+                    tl.current);
+                tl.current.to(finalChain, {
+                    height: finalNode.chainHeight + "em",
+                });
+                animeStyle(nullNode,  styles["connector-current-visit-style"], tl.current);
+                tl.current.set(curNodeWrapper, {
+                    left: nullpos.x + "em",
+                    top: nullpos.y + "em",
+                    y: "200%",
+                }).set(connectedLine.current, {
+                    top: "-100%",
+                }).to(connectedLine.current, {
+                    scale: 1,
+                    transformOrigin: "top center"
+                }).to(curNode, {
+                    scale: 1,
+                    transformOrigin: "top center"
+                })
             }
         
         }
@@ -106,8 +155,9 @@ export default function BinarySearchTreeComp({operation}) {
                         ">
             {treeList}
             {needTravelNode && <TravelNode  
-                                            reference={domCurNode}
+                                            wrapperRef={domWrapper}
                                             lineRef={connectedLine}
+                                            curNodeRef={domCurNode}
                                             infor={
                                                 {
                                                     name: "Current",
@@ -212,84 +262,3 @@ function drawNodeChain(node) {
 
 
 
-// Todo: Back up
-// function drawNodeChain(node) {
-//     if (node !== null) {
-//         const { left : l, 
-//                 bottom, 
-//                 height,
-//                 right: r,
-//             } = node.actualNode.getBoundingClientRect();
-//         const fSize = parseFloat(getComputedStyle(node.actualNode).fontSize);
-//         const {height: leftConnectorHeight} = node.leftConnector.getBoundingClientRect();
-//         if (node.left) {
-//             const leftChild = node.left.actualNode;
-//             const {right, top, width} = leftChild.getBoundingClientRect();
-//             const leftX = right - (width/2);
-//             const leftY = top;
-//             const nodeX = l;
-//             const nodeY = bottom - (height/2);
-//             let dis = calculateHeight(  {x1: leftX, y1: leftY}, 
-//                                         {x2: nodeX, y2: nodeY}) - leftConnectorHeight;
-//             let angle = calculateAngle( {x1: leftX, y1: leftY}, 
-//                                         {x2: nodeX, y2: nodeY});
-//             dis /= fSize;
-//             node.leftChain.style.height = dis + "em";
-//             node.leftConnector.style.transformOrigin = "top right"
-//             node.leftConnector.style.transform = `rotate(${angle}rad)`;
-//         }
-//         else {
-//             const nodeX = l;
-//             const nodeY = bottom - (height/2);
-//             const nullLeftNode = node.nullLeft;
-//             const {top, left, width} = nullLeftNode.getBoundingClientRect();
-//             const nullLeftX = left + width/2;
-//             const nullLeftY = top;
-//             let dis = calculateHeight({x1: nodeX, y1: nodeY}, {x2: nullLeftX, y2: nullLeftY}) - leftConnectorHeight;
-//             let angle = calculateAngle({x1: nodeX, y1: nodeY}, {x2: nullLeftX, y2: nullLeftY});
-//             dis /= fSize;
-//             node.leftChain.style.height = dis + "em";
-//             node.leftConnector.style.transformOrigin = "top right"
-//             node.leftConnector.style.transform = `rotate(${angle}rad)`;
-//         }
-//         if (node.right) {
-//             const nodeX = r;
-//             const nodeY = bottom - (height/2);
-//             const rightChild = node.right.actualNode;
-//             const {left, width, top} = rightChild.getBoundingClientRect();
-//             const rightChildX = left + width/2;
-//             const rightChildY = top;
-//             let dis = calculateHeight(
-//                                         {x1: nodeX, y1: nodeY}, 
-//                                         {x2: rightChildX , y2: rightChildY}
-//                                     )
-//                         - leftConnectorHeight;
-//             let angle = calculateAngle( {x1: nodeX, y1: nodeY}, 
-//                                         {x2: rightChildX , y2: rightChildY});
-//             dis /= fSize;
-//             node.rightChain.style.height = dis + "em";
-//             node.rightConnector.style.transformOrigin = "top left";
-//             node.rightConnector.style.transform = `rotate(-${angle}rad)`;
-//         }
-//         else {
-//             const nodeX = r;
-//             const nodeY = bottom - height/2;
-//             const nullRightNode = node.nullRight;
-//             const {left, width, top} = nullRightNode.getBoundingClientRect();
-//             const nullRightX = left + width/2;
-//             const nulllRightY = top;
-//             let dis = calculateHeight(
-//                                         {x1: nodeX, y1: nodeY},
-//                                         {x2: nullRightX, y2: nulllRightY}
-//                                     ) - leftConnectorHeight;
-//             let angle = calculateAngle( {x1: nodeX, y1: nodeY},
-//                                         {x2: nullRightX, y2: nulllRightY});
-//             dis /= fSize;
-//             node.rightChain.style.height = dis + "em";
-//             node.rightConnector.style.transformOrigin = "top left";
-//             node.rightConnector.style.transform = `rotate(-${angle}rad)`;
-//         }
-//         drawNodeChain(node.left);
-//         drawNodeChain(node.right);
-//     }
-// }
