@@ -91,12 +91,12 @@ export default function StackApp() {
             <div className="flex justify-center">
                 {(type === 'landscape-primary') || (type === "landscap-secondary") ? (<>
                                                     <StackComponent 
-                                                                    operation={operation} 
-                                                                    onPop={handlePop}
-                                                                    onPush={handlePush}
-                                                                    onEmptyTrash={handleStart}
-                                                                    cleanEmptyTrash={handleEmptyTrash}
-                                                                    />
+                                                     operation={operation} 
+                                                     onPop={handlePop}
+                                                     onPush={handlePush}
+                                                     onEmptyTrash={handleStart}
+                                                     cleanEmptyTrash={handleEmptyTrash}
+                                                    />
                                                 </>
                                                 ) : (<div>You are in portrait mode</div>)
                                                 }

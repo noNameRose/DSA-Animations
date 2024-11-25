@@ -30,7 +30,7 @@ export const infor = {
             }
         },
     },
-    "Stack": {
+    Stack: {
         menu: {
             method: {
                 "Push": {
@@ -58,4 +58,32 @@ export const infor = {
 
         }
     },
+    BinarySearchTree: {
+        menu: {
+        method: {
+            "Insert": {
+                needValue: true,
+                needIndex: false,
+            },
+            "Search": {
+                needValue: true,
+                needIndex: false,
+            }
+        },
+
+        color: {
+            butShadowColor:"#e5f1e3",
+            startButColor:"#a3cd9e",
+            startButText:"#e5f1e3",
+            methodButColor:"#a3cd9e",
+            plainTextColor:"#e5f1e3",
+            methodTextColor:"#e5f1e3",
+            menuTheme:"#529471",
+            methodTabText:"#e5f1e3",
+            methodTabbg:"#a3cd9e",
+            closeTabBorder:"#e5f1e3",
+            menuShadow:"#35635b",
+        }
+    }
+    }
 }

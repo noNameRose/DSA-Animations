@@ -29,6 +29,4 @@ export const styles = {
     "null-normal-style": {
         backgroundColor: "#477186",
     }
-
-
 };
