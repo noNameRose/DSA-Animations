@@ -26,6 +26,7 @@ export default class BinarySearchTree {
     }
 
     insert(val) {
+        const visitedNodes = [];
         const newNode = new Node(val);
         let current = this.root;
         let parent = this.root;
@@ -35,6 +36,7 @@ export default class BinarySearchTree {
             return;
         }
         while (current !== null) {
+            visitedNodes.push(current);
             parent = current;
             const curVal = current.value;
             if (curVal > val) {
@@ -65,6 +67,7 @@ export default class BinarySearchTree {
         let nrpx = px + nextGap/2;
         newNode.nullLeftPos = {x: nlpx, y: py + 10};
         newNode.nullRightPos = {x: nrpx, y: py + 10};
+        return {visiteds: visitedNodes, isLeft: isLeftChild};
     }
 
 
@@ -74,6 +77,19 @@ export default class BinarySearchTree {
         const newTree = new BinarySearchTree();
         list.forEach(val => newTree.insert(val));
         return newTree;
+    }
+
+    flatten() {
+        const list = [];
+        function flatPostOrder(node, l) {
+            if (node !== null) {
+                l.push(node);
+                flatPostOrder(node.left, l);
+                flatPostOrder(node.right, l);
+            }
+        }
+        flatPostOrder(this.root, list);
+        return list;
     }
 
     flattentPosOrder(node, list) {

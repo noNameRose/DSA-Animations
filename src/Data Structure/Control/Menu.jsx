@@ -61,6 +61,7 @@ export default function Menu({onStart,
                     md:text-[0.5rem]
                     sm:text-[0.3rem]
                     text-[0.2rem]
+                    z-50
                     "
     >
       <ButShadowColorContext.Provider value={butShadowColor}>

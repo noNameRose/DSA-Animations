@@ -10,10 +10,18 @@ export class Node {
         this._rightConnector = null;
         this._leftVirtualLine = null;
         this._rightVirtualLine = null;
+        this._leftVirtualLine2 = null;
+        this._rightVirtualLine2 = null;
+        this._leftVirtualLine3 = null;
+        this._rightVirtualLine3 = null;
+        this._clockLineUp = null;
         this._nullLeft = null;
         this._nullRight = null;
         this._level = 0;
         this._chainHeight = null;
+        this._clock = null;
+        this._clockLine = null;
+        this._clockWrapper = null;
         this._position = {
             x: 0,
             y: 0,
@@ -32,6 +40,54 @@ export class Node {
             this._right = right;
     }
 
+    set clockLineUp(line) {
+        this._clockLineUp = line;
+    }
+
+    get clockLineUp() {
+        return this._clockLineUp;
+    }
+
+    set leftVirtualLine3(line) {
+        this._leftVirtualLine3 = line;
+    }
+
+    get leftVirtualLine3() {
+        return this._leftVirtualLine3;
+    }
+
+    set rightVirtualLine3(line) {
+        this._rightVirtualLine3 = line;
+    }
+
+    get rightVirtualLine3() {
+        return this._rightVirtualLine3;
+    }
+
+
+    set clockWrapper(wrapper) {
+        this._clockWrapper = wrapper;
+    }
+
+    get clockWrapper() {
+        return this._clockWrapper;
+    }
+
+    set clock(cl) {
+        this._clock = cl;
+    }
+
+    get clock() {
+        return this._clock;
+    }
+
+    set clockLine(cl) {
+        this._clockLine = cl;
+    }
+
+    get clockLine() {
+        return this._clockLine;
+    }
 
     set chainHeight(height) {
         this._chainHeight = height;
@@ -39,6 +95,22 @@ export class Node {
 
     get chainHeight() {
         return this._chainHeight;
+    }
+
+    set leftVirtualLine2(line) {
+        this._leftVirtualLine2 = line;
+    }
+
+    get leftVirtualLine2() {
+        return this._leftVirtualLine2;
+    }
+
+    set rightVirtualLine2(line) {
+        this._rightVirtualLine2 = line;
+    }
+
+    get rightVirtualLine2() {
+        return this._rightVirtualLine2;
     }
 
     set leftVirtualLine(line) {

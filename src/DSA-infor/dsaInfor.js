@@ -61,6 +61,18 @@ export const infor = {
     BinarySearchTree: {
         menu: {
         method: {
+            "InOrder": {
+                needIndex: false,
+                needValue: false,
+            },
+            "PostOrder": {
+                needIndex: false,
+                needValue: false,
+            },
+            "PreOrder": {
+                needIndex: false,
+                needValue: false,
+            },
             "Insert": {
                 needValue: true,
                 needIndex: false,
@@ -68,18 +80,18 @@ export const infor = {
             "Search": {
                 needValue: true,
                 needIndex: false,
-            }
+            },
         },
 
         color: {
             butShadowColor:"#e5f1e3",
             startButColor:"#a3cd9e",
-            startButText:"#e5f1e3",
+            startButText:"white",
             methodButColor:"#a3cd9e",
-            plainTextColor:"#e5f1e3",
-            methodTextColor:"#e5f1e3",
+            plainTextColor:"white",
+            methodTextColor:"white",
             menuTheme:"#529471",
-            methodTabText:"#e5f1e3",
+            methodTabText:"white",
             methodTabbg:"#a3cd9e",
             closeTabBorder:"#e5f1e3",
             menuShadow:"#35635b",
