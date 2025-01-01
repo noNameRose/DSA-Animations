@@ -5,6 +5,7 @@ import { Route, Routes } from "react-router-dom"
 import LinkedListApp from "./Data Structure/LinkedList/LinkedListApp.jsx"
 import StackApp from "./Data Structure/Stack/StackApp.jsx"
 import BinarySearchTreeApp from "./Data Structure/BinarySearchTree/BinarySearchTreeApp.jsx"
+import DoublyLinkedListApp from "./Data Structure/DoublyLinkedlist/DoublyLinkedListApp.jsx"
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
               <Route path="/LinkedList" element={<LinkedListApp/>}/>
               <Route path="/Stack" element={<StackApp/>}/>
               <Route path="/BinarySearchTree" element={<BinarySearchTreeApp/>}/>
+              <Route path="/DoublyLinkedList" element={<DoublyLinkedListApp/>}/>
             </Routes>
           </>
         );

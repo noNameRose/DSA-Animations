@@ -100,7 +100,7 @@ export default function BinarySearchTreeApp() {
                     sm:text-[0.2rem]
                     "
     >
-      {((type === "landscape-primary") 
+      {(   (type === "landscape-primary") 
         || (type === "landscape-secondary")) ? 
               (<>
                 <BinarySearchTreeComp 

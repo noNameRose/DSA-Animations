@@ -97,5 +97,35 @@ export const infor = {
             menuShadow:"#35635b",
         }
     }
+    },
+    DoublyLinkedList: {
+        menu: {
+            method: {
+                "Insert": {
+                    needIndex: true,
+                    needValue: true,
+                },
+                "Remove": {
+                    needIndex: true,
+                    needValue: false,
+                },
+                "Search": {
+                    needValue: true,
+                },
+            },
+            color: {
+                butShadowColor:"#36595f",
+                startButColor:"#b9dbe6",
+                startButText:"#36595f",
+                methodButColor:"#b9dbe6",
+                plainTextColor:"white",
+                methodTextColor:"#36595f",
+                menuTheme:"#5f818a",
+                methodTabText:"#36595f",
+                methodTabbg:"#b9dbe6",
+                closeTabBorder:"#5f818a",
+                menuShadow:"#304852",
+            }
+        },
     }
 }

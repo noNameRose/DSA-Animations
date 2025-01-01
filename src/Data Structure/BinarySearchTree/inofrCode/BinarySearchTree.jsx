@@ -13,6 +13,7 @@ export default class BinarySearchTree {
     get height() {
         return this._height;
     }
+    
     isEmpty() {
         return this._root === null;
     }

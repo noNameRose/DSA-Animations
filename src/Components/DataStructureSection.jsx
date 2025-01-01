@@ -3,6 +3,7 @@ import Card from "./Card.jsx"
 import llImage from "../assets/linkedlist.png"
 import bstImage from "../assets/bst.png"
 import stkImage from "../assets/stk.png"
+import dblyll from "../assets/doublyLinkedList.png"
 
 export default function DataStructureSection() {
   return (
@@ -27,6 +28,9 @@ export default function DataStructureSection() {
           </Link>
           <Link to="/BinarySearchTree" className="w-full flex justify-center">
               <Card color="#35635b" name="Binary Search Tree" difficulty="Easy" type="Non-Linear" img={bstImage}/>
+          </Link>
+          <Link to="/DoublyLinkedList" className="w-full flex justify-center">
+              <Card color="#304852" name="Doubly Linked List" difficulty="Medium" type="Linear" img={dblyll}/>
           </Link>
         </div>     
     </div>
