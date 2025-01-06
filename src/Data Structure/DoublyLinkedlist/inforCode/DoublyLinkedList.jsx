@@ -23,6 +23,35 @@ export default class DoublyLinkedList {
         this._currentWrapper = null;
         this._currentLine = null;
         this._headVirtualLine = null;
+        this._newHeadRef = null;
+        this._newHeadWrapper = null;
+        this._newHeadRefLine = null;
+    }
+
+
+    get newHeadWrapper() {
+        return this._newHeadWrapper;
+    }
+
+    set newHeadWrapper(wrapper) {
+        this._newHeadWrapper = wrapper;
+    }
+
+    get newHeadRefLine() {
+        return this._newHeadRefLine;
+    }
+
+    set newHeadRefLine(line) {
+        return this._newHeadRefLine = line;
+    }
+
+
+    get newHeadRef() {
+        return this._newHeadRef;
+    }
+
+    set newHeadRef(ref) {
+        this._newHeadRef = ref;
     }
 
     get headVirtualLine() {
@@ -251,6 +280,39 @@ export default class DoublyLinkedList {
             current.prev = newNode;
         }
         this.size = this.size + 1;
+    }
+
+    remove(index) {
+        if (this.size === 0)
+            throw new Error("The list is empty");
+        if (index < 0 || index >= this.size)
+            throw new Error("Index out of bound for the size of the list");
+        let current = this.head;
+        // Remove at the beginning of the list
+        if (index === 0) {
+            this.head = current.next;
+            if (this.size > 1) {
+                const newHead = current.next;
+                newHead.prev = null;
+            }
+            else {
+                this.tail = null;
+            }
+        }   // Remove at the end of the list
+        else if (index = this.size - 1) {
+            this.tail.prev.next = null;
+            this.tail = this.tail.prev;
+        }   // Remove somewhere between the list
+        else {
+            let i = 0;
+            while (i < index) {
+                i++;
+                current = current.next;
+            }
+            current.prev.next = current.next;
+            current.next.prev = current.prev;
+        }
+        this.size = this.size - 1;
     }
     
 

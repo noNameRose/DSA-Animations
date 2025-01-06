@@ -1,7 +1,7 @@
 import ListNode from "../ListNode.jsx";
 export const nodeLeft = 12;
 
-export function getDomNodes(list, keys, target_index) {
+export function getDomNodes(list, keys, target_index, operationName) {
     const domList = []; 
     let current = list.head;
     let i = 1;
@@ -9,7 +9,7 @@ export function getDomNodes(list, keys, target_index) {
     let isInsertBetween = target_index > 0 || target_index  < list.size - 1;
     list.iterate((node) => {
         let index = curindex;
-        if (isInsertBetween && index > target_index)
+        if (isInsertBetween && index > target_index && operationName === "insert")
             index--;
         let position = {  x: nodeLeft * i, 
             y: 0,
@@ -106,6 +106,22 @@ export const setUpCurrentNode = (list) => {
         moveDis
     }
 }
+
+export const setUpNewHeadRef = (list) => {
+    const removeNode = list.head;
+    const newHead = removeNode.next;
+    const {width: refWidth, bottom: refBottom} = list.newHeadRef.getBoundingClientRect();
+    const {width: nodeWidth, top: nodeTop} = newHead.actualNode.getBoundingClientRect();
+    const centerDis = getEmSize((refWidth/2 - nodeWidth/2), removeNode.actualNode);
+    const newHeadLineHeight = getEmSize(nodeTop - refBottom, removeNode.actualNode);
+    list.newHeadWrapper.style.left = (parseFloat(newHead.actualNode.style.left) - centerDis) + "em";
+    list.newHeadRefLine.style.height = newHeadLineHeight + "em";
+    return {
+        centerDis,
+        newHeadLineHeight,
+    }
+}
+
 export function getEmSize(size, node) {
     return size/parseFloat((getComputedStyle(node).fontSize));
 }

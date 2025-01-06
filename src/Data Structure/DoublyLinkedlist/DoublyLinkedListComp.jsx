@@ -5,6 +5,7 @@ import { getDomNodes
         , setUpHeadLine
         , setUpTailLine
         , setUpCurrentNode
+        , setUpNewHeadRef
         } from "./Logic/setUpList.jsx";
 import { insertFirstEmpty
         , insertFirst
@@ -12,23 +13,30 @@ import { insertFirstEmpty
         , insertBeforelast
         , insertBetween
     } from "./Logic/anime.js";
+import { removeBetween, removeFirst1, removeFirst2} from "./Logic/removeAnimation.js";
 import gsap from "gsap";
 import HeadComp from "./HeadComp.jsx";
 import TailComp from "./TailComp.jsx";
+import NewHeadRefComp from "./NewHeadRefComp.jsx";
 
 
 export default function DoublyLinkedListComp({operation, cleanAnime, keys}) {
     const {list, name} = operation;
     let needTravelNode = false;
+    let needNewHead = false;
     let listDomNodes;
     if (name === "insert")
-        listDomNodes = getDomNodes(list, keys, operation.index);
+        listDomNodes = getDomNodes(list, keys, operation.index, name);
     else
         listDomNodes = getDomNodes(list, keys, operation.index);
+    const i = operation.index;
     if (name !== "normal") {
-        const i = operation.index;
         if (i > 0 && i < list.size - 2)
             needTravelNode = true;
+    }
+    if (name === "remove") {
+       if (i === 0 && list.size > 1)
+            needNewHead = true;
     }
     const domList = useRef(null);
     const domHead = useRef(null);
@@ -49,6 +57,9 @@ export default function DoublyLinkedListComp({operation, cleanAnime, keys}) {
     const domVirtualTailBottom = useRef(null);
     const refLineWidth = useRef(null);
     const domHeadVirtualLine = useRef(null);
+    const domNewHeadRef = useRef(null);
+    const domNewHeadRefWrapper = useRef(null);
+    const domNewHeadRefLine = useRef(null);
 
     const tl = useRef(null);
     useEffect(() => {
@@ -71,13 +82,22 @@ export default function DoublyLinkedListComp({operation, cleanAnime, keys}) {
         list.virtualTailLineBottom = domVirtualTailBottom.current;
         list.virtualTailLineRight = domVirtualTailRight.current;
         list.headVirtualLine = domHeadVirtualLine.current;
+        list.newHeadRef = domNewHeadRef.current;
+        list.newHeadWrapper = domNewHeadRefWrapper.current;
+        list.newHeadRefLine = domNewHeadRefLine.current;
+
+
+
         setUpRefLine(list, refLineWidth);
         setUpHeadLine(list);
         setUpTailLine(list);
 
         let lineObj;
+        let newHeadInfor;
         if (needTravelNode)
             lineObj = setUpCurrentNode(list);
+        if (needNewHead)
+            newHeadInfor = setUpNewHeadRef(list);
 
         // Insertion
         if (name === "insert") {
@@ -103,6 +123,29 @@ export default function DoublyLinkedListComp({operation, cleanAnime, keys}) {
                     cleanAnime();
                 }
             })
+        }
+        if (name === "remove") {
+            const remove_index = operation.index;
+            // Remove at the beginning of the list
+            if (remove_index === 0) {
+                if (list.size === 1) {
+                    removeFirst1(list, tl.current);
+                }
+                else {
+                    removeFirst2(list, tl.current, newHeadInfor);
+                }
+            }
+            else if (remove_index === list.size - 1) {
+
+            }
+            else {
+                removeBetween(list, tl.current, remove_index, lineObj)
+            }
+            // tl.current.to(list.actualList, {
+            //     onComplete: () => {
+            //         operation.onRemove();
+            //     }
+            // })
         }
         return () => {
             list.actualList = null;
@@ -166,6 +209,8 @@ export default function DoublyLinkedListComp({operation, cleanAnime, keys}) {
                                             </div>
                                         </div>
                 }
+                {needNewHead && <NewHeadRefComp reference={{domNewHeadRef, domNewHeadRefLine, domNewHeadRefWrapper}}/>}
+
                 <div    ref={domList}
                         className="absolute
                                 flex

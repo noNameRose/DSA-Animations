@@ -49,6 +49,23 @@ export default function DoublyLinkedListApp() {
             };
             setOperation(newOperation);
         }
+        if (operationName === "remove") {
+            const i = action.index;
+            const newOperation = {
+                list: newList,
+                name: operationName,
+                index: i,
+                onRemove: () => {
+                    const listAfterRemove = newList.clone();
+                    listAfterRemove.remove(i);
+                    setOperation( {
+                        list: listAfterRemove,
+                        name: "normal",
+                    })
+                }
+            }
+            setOperation(newOperation);
+        }
     }
 
     return (

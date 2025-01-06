@@ -14,6 +14,10 @@ export const color = {
     "head-virtual-line-color": "#3a9188",
     "content-current-visit-color": "#b8e1dd",
     "vitual-line-current-visit": "#3a9188",
+    "NewHead-Ref-bg": "#5c5470",
+    "NewHead-Ref-border": "#dbd8e3",
+    "NewHead-Text": "#dbd8e3",
+    "remove-head-virtual-line-color": "#dbd8e3"
 };
 
 export const size = {

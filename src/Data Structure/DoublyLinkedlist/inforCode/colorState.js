@@ -39,11 +39,25 @@ export const styles = {
         color: "#b8e1dd"
     },
     "head-manipulate-style": {
+        backgroundColor:"#dbd8e3",
+        color: "#5c5470", 
+    },
+    "head-current-visit-style": {
         backgroundColor: "#3a9188",
-        color: "#b8e1dd"
+        color: "#b8e1dd",
     },
     "head-initial-style": {
         backgroundColor: "#b9dbe6",
         color: "#304852",
+    },
+    "node-head-visit-style": {
+        borderStyle: "solid",
+        borderColor: "#dbd8e3",
+        backgroundColor: "#5c5470", 
+        color: "#dbd8e3",
+    },
+    "node-head-content-visit-style": {
+        backgroundColor: "#dbd8e3", 
+        color: "#5c5470",
     }
 }

@@ -8,6 +8,9 @@ export const insertFirstEmpty = (list, tl) => {
     const tailLeftHeight = getEmSize(list.tailLineLeft.getBoundingClientRect().height, list.actualList);
     const tailRightHeight = getEmSize(list.tailLineRight.getBoundingClientRect().height, list.actualList);
     list.shortTailLine.style.opacity = 1;
+    list.tailLineRight.style.opacity = 1;
+    list.tailLineLeft.style.opacity = 1;
+    list.tailLineBottom.style.opacity = 1;
     tl.to([list.headNull, list.tailNull], {
         x: "5rem",
         opacity: 0,
@@ -245,55 +248,19 @@ export const insertBetween = (list, tl, target_index, {cur_head_height, cur_node
 
     tl.fromTo(curNode, {y: "-5em", opacity: 0}, {y: 0, opacity: 1})
     .to(list.currentLine, {height: cur_head_height + "em"})
-    .to(list.actualHead, styles["head-manipulate-style"])
+    .to(list.actualHead, styles["head-current-visit-style"])
     .to(list.currentNode, {scale: 0, transformOrigin: "bottom center"})
     .to(list.currentLine, {scale: 0, transformOrigin: "bottom center"})
     .to(headVirtualLine, {width: headLineWidth + "em"});
     
-    let i = 0;
-    let current = list.head;
-    while (i < target_index) {
-        const curNodeLeft = parseFloat(current.actualNode.style.left);
-        const prevNode = current.prev;
-        changeNodeStyle(current
-                        , tl
-                        , styles["node-current-visit-style"]
-                        , styles["node-content-current-visit-style"]);
-        if (i === 0) {
-            tl.to(list.actualHead, styles["head-initial-style"])
-            .to(headVirtualLine, {transformOrigin: "right center", scale: 0})
-        }
-        if (prevNode !== null) {
-            tl.to(prevNode.nextRef, styles["node-content-initial-style"])
-            .to(prevNode.nextVirtualLine, {
-                scale: 0, 
-                transformOrigin: "right center",
-            });
-        }
-        tl.set(curWrapper, {left: (curNodeLeft + moveDis) +"em"})
-        .set(curLine, {height: cur_node_height + "em"})
-        .to(curLine, {scale: 1})
-        .to(curNode, {scale: 1})
-        .to(curNode, {scale: 0})
-        .to(curLine, {scale: 0})
-        .to(current.actualNode, {
-            color: color["node-content-text-color"],
-            backgroundColor: color["node-theme"],
-            borderColor: color["node-border-color"],
-            borderStyle: "dashed"
-        })
-        .to([current.valBut, current.prevRef], {backgroundColor: color["node-content-bg"], color: color["node-content-text-color"]}, "<")
-        .to(current.nextRef, {color: color["content-current-visit-color"]}, "<")
-        .set(current.nextVirtualLine, {borderColor: color["vitual-line-current-visit"]})
-        .to(current.nextVirtualLine, {width: refLineWidth + "em"})
-        i++;
-        current = current.next;
-    }
+
+    const current = travelNodeAnimation(list, tl, target_index, cur_node_height, refLineWidth, moveDis);
+
     const newNode = current;
     const nodeAfterNewNode = newNode.next;
     changeNodeStyle(nodeAfterNewNode, tl, styles["node-current-visit-style"], styles["node-content-current-visit-style"])
     .to(newNode.prev.nextRef, styles["node-content-initial-style"])
-    .to(newNode.prev.nextVirtualLine, {scale: 0, transformOrigin: "right center"})
+    .to(newNode.prev.nextVirtualLine, {scaleX: 0, transformOrigin: "right center"})
     .set(curWrapper, {left: parseFloat(newNode.actualNode.style.left) + moveDis + "em"})
     .to(curLine, {scale: 1})
     .to(curNode, {scale: 1})
@@ -336,7 +303,55 @@ export const insertBetween = (list, tl, target_index, {cur_head_height, cur_node
 }
 
 
-const changeNodeStyle = (node, tl, pStyle, cStyle, posParameter) => {
+export const travelNodeAnimation = (list, tl, target_index, cur_node_height, refLineWidth, moveDis) => {
+    let i = 0;
+    let current = list.head;
+    const curWrapper = list.currentWrapper;
+    const curLine = list.currentLine;
+    const curNode = list.currentNode;
+    const headVirtualLine = list.headVirtualLine;
+    while (i < target_index) {
+        const curNodeLeft = parseFloat(current.actualNode.style.left);
+        const prevNode = current.prev;
+        changeNodeStyle( current,
+                         tl,
+                         styles["node-current-visit-style"],
+                         styles["node-content-current-visit-style"]
+        );
+        if (i === 0) {
+            tl.to(list.actualHead, styles["head-initial-style"])
+            .to(headVirtualLine, {transformOrigin: "right center", scaleX: 0});
+        }
+        if (prevNode !== null) {
+            tl.to(prevNode.nextRef, styles["node-content-initial-style"])
+            .to(prevNode.nextVirtualLine, {
+                scaleX: 0,
+                transformOrigin: "right center",
+            });
+        }
+        tl.set(curWrapper, {left: (curNodeLeft + moveDis) + "em"})
+        .set(curLine, {height: cur_node_height + "em"})
+        .to(curLine, {scale: 1})
+        .to(curNode, {scale: 1})
+        .to(curNode, {scale: 0})
+        .to(curLine, {scale: 0})
+        .to(current.actualNode, {
+            color: color["node-content-text-color"],
+            backgroundColor: color["node-theme"],
+            borderColor: color["node-border-color"],
+            borderStyle: "dashed"
+        })
+        .to([current.valBut, current.prevRef], {backgroundColor: color["node-content-bg"], color: color["node-content-text-color"]}, "<")
+        .to(current.nextRef, {color: color["content-current-visit-color"]}, "<")
+        .set(current.nextVirtualLine, {borderColor: color["vitual-line-current-visit"]})
+        .to(current.nextVirtualLine, {width: refLineWidth + "em"})
+        i++;
+        current = current.next;
+    }
+    return current;
+}
+
+export const changeNodeStyle = (node, tl, pStyle, cStyle, posParameter) => {
     tl.to(node.actualNode, pStyle, posParameter)
     .to([node.prevRef, node.nextRef, node.valBut], cStyle, "<");
     return tl;
