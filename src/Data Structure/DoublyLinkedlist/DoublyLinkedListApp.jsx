@@ -38,20 +38,22 @@ export default function DoublyLinkedListApp() {
 
     function handleStart(operationName, action) {
         const newList = operation.list.clone();
+        let newOperation;
         if (operationName === "insert") {
             const i = action.index;
             newList.insert(action.value, action.index);
             keys.current.add(i);
-            const newOperation = {
+            newOperation = {
                 list: newList,
                 name: operationName,
                 index: i,
             };
-            setOperation(newOperation);
         }
         if (operationName === "remove") {
             const i = action.index;
-            const newOperation = {
+            if (i < 0 || i >= newList.size)
+                return;
+            newOperation = {
                 list: newList,
                 name: operationName,
                 index: i,
@@ -64,8 +66,24 @@ export default function DoublyLinkedListApp() {
                     })
                 }
             }
-            setOperation(newOperation);
         }
+        if(operationName === "search") {
+            const key = action.value;
+            const i = newList.search(key);
+            newOperation = {
+                list: newList,
+                name: operationName,
+                foundIndex: i,
+                onSearch: () => {
+                    const cloneList = newList.clone();
+                    setOperation({
+                        list: cloneList,
+                        name: "normal",
+                    })
+                },
+            };   
+        }
+        setOperation(newOperation);
     }
 
     return (

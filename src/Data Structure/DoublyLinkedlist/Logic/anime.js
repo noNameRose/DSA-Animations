@@ -233,7 +233,6 @@ export const insertBeforelast = (list, tl) => {
 }
 
 export const insertBetween = (list, tl, target_index, {cur_head_height, cur_node_height, moveDis}) => {
-    const headLineWidth = parseFloat(list.headLine.style.width);
     const headVirtualLine = list.headVirtualLine;
     const refLineWidth = parseFloat(list.head.nextRefLine.style.width);
     const curNode = list.currentNode;
@@ -244,17 +243,9 @@ export const insertBetween = (list, tl, target_index, {cur_head_height, cur_node
     const extendedLineWidth = Math.sqrt((moveDownDis*moveDownDis) + (refLineWidth*refLineWidth));
     const rotateAngle = Math.atan(moveDownDis/refLineWidth)
 
-    headVirtualLine.style.borderTopColor = color["head-virtual-line-color"],
+    headVirtualLine.style.borderTopColor = color["head-virtual-line-color"];
 
-    tl.fromTo(curNode, {y: "-5em", opacity: 0}, {y: 0, opacity: 1})
-    .to(list.currentLine, {height: cur_head_height + "em"})
-    .to(list.actualHead, styles["head-current-visit-style"])
-    .to(list.currentNode, {scale: 0, transformOrigin: "bottom center"})
-    .to(list.currentLine, {scale: 0, transformOrigin: "bottom center"})
-    .to(headVirtualLine, {width: headLineWidth + "em"});
-    
-
-    const current = travelNodeAnimation(list, tl, target_index, cur_node_height, refLineWidth, moveDis);
+    const current = travelNodeAnimation(list, tl, target_index, cur_head_height, cur_node_height, refLineWidth, moveDis);
 
     const newNode = current;
     const nodeAfterNewNode = newNode.next;
@@ -303,13 +294,23 @@ export const insertBetween = (list, tl, target_index, {cur_head_height, cur_node
 }
 
 
-export const travelNodeAnimation = (list, tl, target_index, cur_node_height, refLineWidth, moveDis) => {
+export const travelNodeAnimation = (list, tl, target_index, cur_head_height , cur_node_height, refLineWidth, moveDis) => {
+    
     let i = 0;
     let current = list.head;
     const curWrapper = list.currentWrapper;
     const curLine = list.currentLine;
     const curNode = list.currentNode;
     const headVirtualLine = list.headVirtualLine;
+    const headLineWidth = parseFloat(list.headLine.style.width);
+
+    tl.fromTo(curNode, {y: "-5em", opacity: 0}, {y: 0, opacity: 1})
+    .to(curLine, {height: cur_head_height + "em"})
+    .to(list.actualHead, styles["head-current-visit-style"])
+    .to(curNode, {scale: 0, transformOrigin: "bottom center"})
+    .to(curLine, {scale: 0, transformOrigin: "bottom center"})
+    .to(headVirtualLine, {width: headLineWidth + "em"});
+
     while (i < target_index) {
         const curNodeLeft = parseFloat(current.actualNode.style.left);
         const prevNode = current.prev;
@@ -357,7 +358,7 @@ export const changeNodeStyle = (node, tl, pStyle, cStyle, posParameter) => {
     return tl;
 }
 
-const moveNodesLeft = (startNode, tl) => {
+export const moveNodesLeft = (startNode, tl) => {
     let current = startNode;
     while (current !== null) {
         const node = current.actualNode;

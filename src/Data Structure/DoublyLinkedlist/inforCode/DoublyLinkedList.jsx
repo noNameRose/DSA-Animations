@@ -299,7 +299,7 @@ export default class DoublyLinkedList {
                 this.tail = null;
             }
         }   // Remove at the end of the list
-        else if (index = this.size - 1) {
+        else if (index == this.size - 1) {
             this.tail.prev.next = null;
             this.tail = this.tail.prev;
         }   // Remove somewhere between the list
@@ -314,7 +314,27 @@ export default class DoublyLinkedList {
         }
         this.size = this.size - 1;
     }
+
+    search(key) {
+        if (this.size < 1)
+            throw new Error("The list empty, please insert value to search");
+        let current = this.head;
+        let i = 0;
+        while (current !== null) {
+            const val = current.value;
+            if (key === val)
+                return i;
+            current = current.next;
+            i++;
+        }
+        return -1;
+    }
     
+    toString() {
+        const lst = [];
+        this.iterate((node) => lst.push(node.value));
+        return lst;
+    }
 
     iterate(func) {
         let current = this.head;

@@ -13,11 +13,16 @@ import { insertFirstEmpty
         , insertBeforelast
         , insertBetween
     } from "./Logic/anime.js";
-import { removeBetween, removeFirst1, removeFirst2} from "./Logic/removeAnimation.js";
+import { removeBetween,
+         removeFirst1, 
+         removeFirst2,
+         removeLast
+        } from "./Logic/removeAnimation.js";
 import gsap from "gsap";
 import HeadComp from "./HeadComp.jsx";
 import TailComp from "./TailComp.jsx";
 import NewHeadRefComp from "./NewHeadRefComp.jsx";
+import { searchAnimation } from "./Logic/searchAnimation.js";
 
 
 export default function DoublyLinkedListComp({operation, cleanAnime, keys}) {
@@ -35,9 +40,13 @@ export default function DoublyLinkedListComp({operation, cleanAnime, keys}) {
             needTravelNode = true;
     }
     if (name === "remove") {
-       if (i === 0 && list.size > 1)
+        if (i === 0 && list.size > 1)
             needNewHead = true;
+        if (i > 0 && i < list.size - 1)
+            needTravelNode = true;
     }
+    if (name === "search")
+        needTravelNode = true;
     const domList = useRef(null);
     const domHead = useRef(null);
     const domTail = useRef(null);
@@ -136,17 +145,28 @@ export default function DoublyLinkedListComp({operation, cleanAnime, keys}) {
                 }
             }
             else if (remove_index === list.size - 1) {
-
+                removeLast(list, tl.current);
             }
             else {
                 removeBetween(list, tl.current, remove_index, lineObj)
             }
-            // tl.current.to(list.actualList, {
-            //     onComplete: () => {
-            //         operation.onRemove();
-            //     }
-            // })
+            tl.current.to(list.actualList, {
+                onComplete: () => {
+                    operation.onRemove();
+                }
+            })
         }
+        if (name === "search") {
+            const foundIndex = operation.foundIndex;
+            searchAnimation(list, foundIndex, tl.current, lineObj);
+            tl.current.to(list.actualList, {
+                onComplete: () => {
+                    operation.onSearch();
+                }
+            })
+        }
+
+
         return () => {
             list.actualList = null;
             list.shortTailLine = null;
