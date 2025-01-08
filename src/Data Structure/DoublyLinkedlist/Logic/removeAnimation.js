@@ -106,9 +106,10 @@ export const removeBetween = (list, tl, target_index, {cur_head_height, cur_node
     const curWrapper = list.currentWrapper;
     const curLine = list.currentLine;
     const refLineWidth = parseFloat(list.head.nextRefLine.style.width);
-    const moveDownDis = 27;
     const removeNode = travelNodeAnimation(list, tl, target_index, cur_head_height, cur_node_height, refLineWidth, moveDis);
     const tailLineWidth = parseFloat(list.tailLine.style.width);
+    let moveUpDis = -5;
+
     changeNodeStyle(removeNode, 
                     tl, 
                     styles["node-current-visit-style"], 
@@ -118,87 +119,112 @@ export const removeBetween = (list, tl, target_index, {cur_head_height, cur_node
     .to(removeNode.prev.nextVirtualLine, {scaleX: 0, transformOrigin: "right center"})
     .to(curLine, {scale: 1, transformOrigin: "bottom center"})
     .to(curNode, {scale: 1});
-    moveNodeDown(removeNode, list, tl, moveDownDis, cur_node_height)
-    .to(removeNode.actualNode, {scale: 0, transformOrigin: "top center"})
+
+    const {extendedLineWidth, rotateAngle} = moveNodeUp(removeNode, list, tl, moveUpDis, cur_node_height);
+    tl.set(removeNode.nextVirtualLine, {
+        transform: `rotate(${rotateAngle}rad)`,
+        transformOrigin: "left center",
+        borderColor: color["vitual-line-current-visit"],
+    })
+    .to(removeNode.nextVirtualLine, {
+        width: extendedLineWidth + 0.5 + "em",
+    })
+    changeNodeStyle(removeNode.next
+                    , tl
+                    , styles["node-current-visit-style"]
+                    , styles["node-content-current-visit-style"]
+                    )
+    .to(removeNode.next.prevRefLine, {
+        width: refLineWidth + "em",
+        transform: "rotate(0deg)",
+    })
+    .set(removeNode.prevVirtualLine, {
+        borderColor: color["vitual-line-current-visit"],
+        transformOrigin: "right center",
+        transform: `rotate(-${rotateAngle}rad)`
+    })
+    .to(removeNode.prevVirtualLine, {
+        width: extendedLineWidth + "em",
+    });
+    changeNodeStyle(removeNode.prev
+        , tl
+        , styles["node-current-visit-style"]
+        , styles["node-content-current-visit-style"]
+        )
+    .to(removeNode.next.prevRefLine, {width: refLineWidth + nodeLeft + "em"})
+    .to(removeNode.prev.nextRefLine, {
+        width: refLineWidth - 2 + "em", 
+        transform: `rotate(0deg)`,
+    });
+
+    moveUpDis -= 2;
+    const extendRefLineWidth = Math.sqrt(moveUpDis*moveUpDis + refLineWidth*refLineWidth);
+    const rotateAngle2 = Math.atan(-moveUpDis/refLineWidth);
+    tl.to(removeNode.actualNode, {top: moveUpDis + "em"})
+    .to(curWrapper, {bottom: cur_node_height + Math.abs(moveUpDis) + "em"}, "<")
+    .to([removeNode.nextRefLine, removeNode.nextVirtualLine], {
+        width: extendRefLineWidth + "em",
+        transform: `rotate(${rotateAngle2}rad)`}, "<")
+    .to([removeNode.prevRefLine, removeNode.prevVirtualLine], {
+        width: extendRefLineWidth + "em",
+        transform: `rotate(-${rotateAngle2}rad)`}, "<")
+    .to(removeNode.prev.nextRefLine, {width: refLineWidth + nodeLeft + "em"})
+    .to([removeNode.nextRefLine, 
+        removeNode.nextVirtualLine, 
+        removeNode.prevRefLine, 
+        removeNode.prevVirtualLine], {
+            width: 0,
+    });
+    changeNodeStyle(removeNode.prev, 
+                    tl,
+                    styles["node-initial-style"],
+                    styles["node-content-initial-style"],
+                    "<");
+    changeNodeStyle(removeNode.next, 
+                    tl,
+                    styles["node-initial-style"],
+                    styles["node-content-initial-style"],
+    "<").to(removeNode.actualNode, {scale: 0, transformOrigin: "top center"})
     .to(curLine, {height: 0})
     .to(curNode, {y: "5em", opacity: 0});
     moveNodesToLeft(removeNode.next, tl)
     .to([removeNode.prev.nextRefLine, removeNode.next.prevRefLine], {width: refLineWidth + "em"}, "<")
-    .to(list.tailLine, {width: (tailLineWidth - nodeLeft) + "em"}, "<")
-
+    .to(list.tailLine, {width: tailLineWidth - nodeLeft + "em"}, "<")
 }
 
-const moveNodeDown = (node, list, tl, moveDownDis, cur_node_height) => {
-    const domNode = node.actualNode;
-    const refLineWidth = parseFloat(node.nextRefLine.style.width);
-    const extendedLineWidth = Math.sqrt(moveDownDis*moveDownDis + refLineWidth*refLineWidth);
+
+const moveNodeUp = (node, list, tl, moveUpDis, cur_node_height) => {
     const curWrapper = list.currentWrapper;
-    const {height} = curWrapper.getBoundingClientRect();
-    const rotateAngle = Math.atan(moveDownDis/refLineWidth);
-    const curLine = list.currentLine;
-    tl.to(domNode, {top: moveDownDis + "em"})
-    .to(curWrapper, {top: (moveDownDis - getEmSize(height, domNode)) - cur_node_height + "em",}, "<")
-    .to(curLine, {top: cur_node_height + "em"}, "<")
+    const refLineWidth = parseFloat(list.head.nextRefLine.style.width);
+    const extendedLineWidth = Math.sqrt(refLineWidth*refLineWidth + moveUpDis*moveUpDis);
+    const rotateAngle = Math.atan(-moveUpDis/refLineWidth);
+
+    tl.to(node.actualNode, {top: moveUpDis + "em"})
+    .to(curWrapper, {bottom: cur_node_height + Math.abs(moveUpDis) + "em"}, "<")
     .to(node.nextRefLine, {
         width: extendedLineWidth + "em",
-        transform: `rotate(-${rotateAngle}rad)`,
-        transformOrigin: "left top",
+        transform: `rotate(${rotateAngle}rad)`,
+        transformOrigin: "left center"
     }, "<")
-    .to(node.nextVirtualLine, {
+    .to(node.next.prevRefLine, {
+        width: extendedLineWidth + "em",
+        transform: `rotate(${rotateAngle}rad)`,
+        transformOrigin: "right center"
+    }, "<")
+    .to(node.prev.nextRefLine, {
+        width: extendedLineWidth + "em",
         transform: `rotate(-${rotateAngle}rad)`,
-        transformOrigin: "left top",
-        borderColor: color["current-border-color"]
+        transformOrigin: "left center"
     }, "<")
     .to(node.prevRefLine, {
         width: extendedLineWidth + "em",
-        transform: `rotate(${rotateAngle}rad)`,
-        transformOrigin: "right top",
-    }, "<")
-    .set(node.prevVirtualLine, {
-        transform: `rotate(${rotateAngle}rad)`,
-        transformOrigin: "right top",
-        borderColor: color["current-border-color"]
-    }, "<")
-    .to(node.prev.nextRefLine, {
-        width: extendedLineWidth + "em",
-        transform: `rotate(${rotateAngle}rad)`,
-        transformOrigin: "left top",
-    }, "<")
-    .set(node.prev.nextVirtualLine, {
-        width: 0,
-        transform: `rotate(${rotateAngle}rad)`,
-        transformOrigin: "left top",
-    }, "<")
-    .to(node.next.prevRefLine, {
-        width: extendedLineWidth + "em",
         transform: `rotate(-${rotateAngle}rad)`,
-        transformOrigin: "right top",
+        transformOrigin: "right center"
     }, "<")
-    .set(node.next.prevVirtualLine, {
-        transform: `rotate(-${rotateAngle}rad)`,
-        transformOrigin: "right top",
-    }, "<")
-    .to([node.prevVirtualLine, node.nextVirtualLine], {width: extendedLineWidth + "em"})
-    changeNodeStyle(node.prev, tl, styles["node-current-visit-style"], styles["node-content-current-visit-style"])
-    changeNodeStyle(node.next, tl, styles["node-current-visit-style"], styles["node-content-current-visit-style"], "<")
-    .to(node.prev.nextRefLine, {
-        width: refLineWidth - 2 + "em",
-        transform: "rotate(0deg)",
-    })
-    .to(node.prev.nextRefLine, {
-        width: refLineWidth + nodeLeft + "em"
-    })
-    .to(node.next.prevRefLine, {
-        width: refLineWidth - 2 + "em",
-        transform: "rotate(0deg)",
-    })
-    .to(node.next.prevRefLine, {
-        width: refLineWidth + nodeLeft + "em"
-    })
-    .to([node.prevRefLine, node.nextVirtualLine, node.prevVirtualLine, node.nextRefLine], {width: 0})
-    changeNodeStyle(node.prev,tl , styles["node-initial-style"], styles["node-content-initial-style"], "<")
-    changeNodeStyle(node.next, tl, styles["node-initial-style"], styles["node-content-initial-style"], "<")
-    return tl;
+    return {
+        extendedLineWidth,
+        rotateAngle
+    };
 }
 
 export const removeLast = (list, tl) => {
