@@ -2,7 +2,7 @@ import Menu from "../Control/Menu"
 import { useOrientation } from "react-use"
 import BinarySearchTreeComp from "./BinarySearchTreeComp.jsx"
 import BinarySearchTree from "./inofrCode/BinarySearchTree.jsx"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { infor } from "../../DSA-infor/dsaInfor.js";
 
 const bst = new BinarySearchTree();
@@ -45,8 +45,16 @@ export default function BinarySearchTreeApp() {
   const {type} = useOrientation();
   const [operation, setOperation] = useState({
                                               tree: bst,
-                                              name: "normal",
+                                                name: "normal",
                                             });
+  const backGroundChnage = true;                                          
+
+  useEffect(() => {
+    document.body.style.backgroundColor = "#35635b";
+    return () => {
+      document.body.style.backgroundColor = "";
+    }
+  }, [backGroundChnage]);
 
   function handleAnimation() {
       let newTree = operation.tree.clone();

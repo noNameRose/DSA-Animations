@@ -1,4 +1,4 @@
-import { useState, useRef} from "react"
+import { useState, useRef, useEffect} from "react"
 import { useOrientation } from "react-use";
 import { color } from "./inforCode/color.js";
 import { infor } from "../../DSA-infor/dsaInfor.js";
@@ -24,6 +24,15 @@ export default function DoublyLinkedListApp() {
                                                     list:lst,
                                                     name: "normal"
                                                 });
+
+    const backGroundChnage = true;                                          
+
+    useEffect(() => {
+        document.body.style.backgroundColor = "#304852";
+        return () => {
+        document.body.style.backgroundColor = "";
+        }
+    }, [backGroundChnage])
 
     function handleEndAnimation() {
         let newList = operation.list.clone();

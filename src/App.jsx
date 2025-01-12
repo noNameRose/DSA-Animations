@@ -6,6 +6,7 @@ import LinkedListApp from "./Data Structure/LinkedList/LinkedListApp.jsx"
 import StackApp from "./Data Structure/Stack/StackApp.jsx"
 import BinarySearchTreeApp from "./Data Structure/BinarySearchTree/BinarySearchTreeApp.jsx"
 import DoublyLinkedListApp from "./Data Structure/DoublyLinkedlist/DoublyLinkedListApp.jsx"
+import Footer from "./Components/Footer.jsx"
 
 export default function App() {
   return (
@@ -14,11 +15,11 @@ export default function App() {
               <Route path="/" element={<>
                                         <Navigation/>
                                         <MainPage/>
-                                        
                                         <DataStructureSection/> 
+                                        <Footer/>
                                        </>}
               />
-              <Route path="/LinkedList" element={<LinkedListApp/>}/>
+              <Route path="/SinglyLinkedList" element={<LinkedListApp/>}/>
               <Route path="/Stack" element={<StackApp/>}/>
               <Route path="/BinarySearchTree" element={<BinarySearchTreeApp/>}/>
               <Route path="/DoublyLinkedList" element={<DoublyLinkedListApp/>}/>
