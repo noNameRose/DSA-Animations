@@ -2,11 +2,11 @@ export const infor = {
     LinkedList: {
         menu: {
             method: {
-                "Remove(i)": {
-                    needIndex: true,
-                    needValue: false,
+                "Remove": {
+                    needIndex: false,
+                    needValue: true,
                 },
-                "Insert(i)": {
+                "Insert": {
                     needIndex: true,
                     needValue: true,
                 },
