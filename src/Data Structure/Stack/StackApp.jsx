@@ -4,6 +4,7 @@ import Menu from "../Control/Menu.jsx"
 import { useOrientation } from "react-use";
 import { Stack } from "./InforCode/Stack.jsx";
 import { infor } from "../../DSA-infor/dsaInfor.js";
+import TooSmall from "../ScreenSizeToSmall/TooSmall.jsx";
 
 const st = new Stack(15);
 const trashStack = new Stack(15);
@@ -19,7 +20,6 @@ export default function StackApp() {
                                                 trashStk: trashStack,
                                                 name: "normal",
                                                 });
-    const {type} = useOrientation();
 
     function handlePop() {
         let newStack = operation.stk.clone();
@@ -88,18 +88,15 @@ export default function StackApp() {
     });
     return (
         <>
+            <TooSmall color={"#774936"} textColor={"white"}/>
             <div className="flex justify-center">
-                {(type === 'landscape-primary') || (type === "landscap-secondary") ? (<>
-                                                    <StackComponent 
-                                                     operation={operation} 
-                                                     onPop={handlePop}
-                                                     onPush={handlePush}
-                                                     onEmptyTrash={handleStart}
-                                                     cleanEmptyTrash={handleEmptyTrash}
-                                                    />
-                                                </>
-                                                ) : (<div>You are in portrait mode</div>)
-                                                }
+                <StackComponent 
+                    operation={operation} 
+                    onPop={handlePop}
+                    onPush={handlePush}
+                    onEmptyTrash={handleStart}
+                    cleanEmptyTrash={handleEmptyTrash}
+                />
             </div>
             <Menu onStart={handleStart} 
                 isAnimating={operation.name !== "normal"}

@@ -8,6 +8,7 @@ import { getRandomNumber } from "./Logic/setUpList.jsx";
 import Menu from "../Control/Menu.jsx";
 import DoublyLinkedList from "./inforCode/DoublyLinkedList.jsx"
 import DoublyLinkedListComp from "./DoublyLinkedListComp.jsx";
+import TooSmall from "../ScreenSizeToSmall/TooSmall.jsx";
 
 
 const randomKeys = new RandomKey(20);
@@ -96,6 +97,8 @@ export default function DoublyLinkedListApp() {
     }
 
     return (
+        <>
+        <TooSmall color={"#304852"} textColor={"white"}/>
         <div className="w-screen
                         h-screen
                         relative
@@ -109,9 +112,6 @@ export default function DoublyLinkedListApp() {
                 }
              }
         >
-            {
-                ((type === "landscape-primary") || type === "landscape-secondary") ?
-                        (<>
                             <DoublyLinkedListComp
                                 operation={operation}
                                 cleanAnime={handleEndAnimation}
@@ -123,9 +123,7 @@ export default function DoublyLinkedListApp() {
                                 color={infor.DoublyLinkedList.menu.color}
                                 methods={infor.DoublyLinkedList.menu.method}
                             />
-                        </>) 
-                    :   (<div>You are in portrail mode</div>)
-            }
         </div>
+        </>
     )
 }

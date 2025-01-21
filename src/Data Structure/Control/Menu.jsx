@@ -35,7 +35,7 @@ export default function Menu({onStart,
   useGSAP(() => {
     if (menuWidth.current === null) {
       menuWidth.current = menu.current.getBoundingClientRect().height;
-      menuWidth.current /= parseInt(getComputedStyle(menu.current).fontSize);
+      menuWidth.current /= parseFloat(getComputedStyle(menu.current).fontSize);
     }
     tl.current = gsap.timeline({paused: true}).to(menu.current, {
       y: "100%",

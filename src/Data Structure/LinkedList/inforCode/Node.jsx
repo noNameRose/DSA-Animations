@@ -1,5 +1,5 @@
 export class Node {
-    constructor(val, next) {
+    constructor(val, next, id) {
         this._value = val;
         this._next = null;
         this._actualNode = null;
@@ -9,8 +9,19 @@ export class Node {
         this._leftDis = 0;
         this._nextNuLL = null;
         this._nextVirtualRefLine = null;
+        this._id = id;
+        if (id === undefined)
+            this._id = this.getRandomKeys();
         if (next !== undefined)
             this._next = next;
+    }
+
+    get id() {
+        return this._id;
+    }
+
+    set id(id) {
+        this._id = id;
     }
 
 
@@ -87,5 +98,10 @@ export class Node {
 
     set valBut(but) {
         this._valBut = but;
+    }
+
+    getRandomKeys() {
+        let randomKey = Math.floor(Math.random() * 1000000);
+        return randomKey;
     }
 }

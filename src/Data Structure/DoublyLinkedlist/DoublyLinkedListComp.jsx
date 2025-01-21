@@ -176,7 +176,7 @@ export default function DoublyLinkedListComp({operation, cleanAnime, keys}) {
     }, [operation]);
     return (
         <>
-            <div className="fixed bottom-0 right-0">
+            {/* <div className="fixed bottom-0 right-0">
                 <button className="text-[red] text-[2rem] p-[1em] rounded-md bg-[white]"
                         onClick={() => {
                         if (tl.current)
@@ -193,7 +193,7 @@ export default function DoublyLinkedListComp({operation, cleanAnime, keys}) {
                 >
                     Resume
                 </button>
-            </div>
+            </div> */}
             <div className="absolute
                             left-[10em]
                             top-[15em]

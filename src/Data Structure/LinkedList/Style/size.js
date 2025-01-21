@@ -7,5 +7,6 @@ export const size = {
     "node-padding": "2em",
     "node-rounded": "0.8em",
     "node-border-width": "0.4em",
-    "ref-line-width": "0.4em"
+    "ref-line-width": "0.4em",
+    "travel-node-border-width": "0.3em",
 }

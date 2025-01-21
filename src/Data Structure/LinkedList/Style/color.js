@@ -3,5 +3,14 @@ export const color = {
     "node-content-bg": "#477186",
     "node-theme": "#113C51",
     "node-border-normal-color": "#477186",
-    "ref-line-normal-color": "#477186"
+    "ref-line-normal-color": "#477186",
+    "virtual-line-tail-color": "#dbd8e3",
+    "current-bg": "#5c5470",
+    "current-border-color": "#dbd8e3",
+    "current-text": "#dbd8e3",
+    "virtual-head-line-color": "#dbd8e3",
+    "prev-bg": "#5f818a",
+    "prev-border-color": "#b9dbe6",
+    "prev-text": "#b9dbe6",
+    "prev-line-color": "#b9dbe6",
 }

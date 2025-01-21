@@ -17,18 +17,22 @@ export default function Node({node, index, isLast}) {
     const domRefLine = useRef(null);
     const domNextNull = useRef(null);
     const domNextRef = useRef(null);
+    const domValBut = useRef(null);
+    const domNextVirtualLine = useRef(null);
 
     useEffect(() => {
         node.actualNode = domNode.current;
         node.nextRefLine = domRefLine.current;
         node.nextNull = domNextNull.current;
         node.nextRef = domNextRef.current;
-        
+        node.valBut = domValBut.current;
+        node.nextVirtualRefLine = domNextVirtualLine.current;
 
         return () => {
             node.actualNode = null;
             node.nextRefLine = null;
-            node.nextNull = domNextNull.current;
+            node.nextNull = null;
+            node.valBut = null;
         }
     })
 
@@ -49,11 +53,11 @@ export default function Node({node, index, isLast}) {
             }
             ref={domNode}
         >
-            <p>{index}</p>
-            <button style={refStyle} className="self-stretch">{node.value}</button>
+            <p className="text-[1.5em]">{index}</p>
+            <button style={refStyle} className="self-stretch" ref={domValBut}>{node.value}</button>
             <button style={refStyle} className="self-stretch" ref={domNextRef}>
                 Next
-                <div className="absolute w-[100px] border-dashed top-1/2 left-full"
+                <div className="absolute border-dashed top-1/2 left-full"
                      style={
                         {
                             borderTopWidth: size["ref-line-width"],
@@ -62,17 +66,27 @@ export default function Node({node, index, isLast}) {
                      }
                      ref={domRefLine}
                 >
-                    <div className={`absolute left-full p-[0.5em] transform -translate-y-1/2 inline opacity-${isLast ? 1 : 0}`}
+                    <div className={`absolute left-full p-[0.5em] inline opacity-${isLast ? 1 : 0} transform -translate-y-[50%]`}
                             style={
                                 {
                                     backgroundColor: color["node-content-bg"],
-                                    borderRadius: size["node-rounded"]
+                                    borderRadius: size["node-rounded"],
+                                    color: "white"
                                 }
                             }
                             ref={domNextNull}
                     >
                         Null
                     </div>
+                </div>
+                <div className="absolute border-solid top-1/2 left-full"
+                     style={
+                        {
+                            borderTopWidth: size["ref-line-width"],
+                        }
+                     }
+                     ref={domNextVirtualLine}
+                >
                 </div>
             </button>
         </div>

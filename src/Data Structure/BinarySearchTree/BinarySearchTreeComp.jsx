@@ -715,7 +715,7 @@ function clockAnimation(node, clockLineHeight, tl) {
         scale: 0,
         transformOrigin: "bottom center",
     }, "<").to(node.clock, {
-        rotateY: "360",
+        // rotateY: "360",
         textContent: "Visited"
     });
     animeStyle(node.clock, styles["node-finished-visit-style"], tl, "<");

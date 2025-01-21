@@ -1,32 +1,62 @@
 export const styles = {
-    "node-initial-style": {
-        borderStyle: "dashed",
-        borderColor: "#27556C",
+   "node-normal-style": {
         backgroundColor: "#113C51",
-    },
-    "node-content-initial-style": {
+        borderStyle: "dashed",
+        borderColor: "#477186",
+        color: "white",
+   },
+   "node-content-normal-style": {
         backgroundColor: "#477186",
-    },
-    "node-current-visit-style": {
+        color: "white",
+   },
+   "tail-manipulated-style": {
+        backgroundColor: "#dbd8e3",
+        color: "#5c5470",
+   },
+   "node-tail-manipulate-style": {
+        backgroundColor: "#5c5470",
         borderStyle: "solid",
-        borderColor: "#6d6192",
-        backgroundColor: "#352d4d",
-    },
-    "node-content-current-visit-style": {
-        backgroundColor: "#6d6192",
-    },
-    "node-previous-visit-style": {
-        borderStyle: "solid",
-        borderColor: "#394359",
-        backgroundColor: "#303242",
-    },
-    "node-content-previous-visit-style": {
-        backgroundColor: "#394359",
-    },
-    "null-visit-style": {
-        backgroundColor: "#6d6192",
-    },
-    "null-normal-style": {
+        borderColor: "#dbd8e3",
+        color: "#dbd8e3",
+   },
+   "node-content-tail-visit-style": {
+        backgroundColor: "#dbd8e3",
+        color: "#5c5470",
+   },
+   "tail-normal-style": {
         backgroundColor: "#477186",
-    }
+        color: "white",
+   },
+   "head-current-visit-style": {
+          backgroundColor: "#dbd8e3",
+          color: "#5c5470",
+   },
+   "node-current-visit-style": {
+          backgroundColor: "#5c5470",
+          borderStyle: "solid",
+          borderColor: "#dbd8e3",
+          color: "#dbd8e3",
+   },
+   "node-content-visit-style": {
+          backgroundColor: "#dbd8e3",
+          color: "#5c5470",
+   },
+   "head-normal-style": {
+          backgroundColor: "#477186",
+          color: "white",
+   },
+   "head-prev-visit-style": {
+          backgroundColor: "#b9dbe6",
+          color: "#304852",
+   },
+   "node-prev-visit-style": {
+          backgroundColor: "#5f818a",
+          borderStyle: "solid",
+          borderColor: "#b9dbe6",
+          color: "#304852",
+   },
+   "node-content-prev-visit-style": {
+          backgroundColor: "#b9dbe6",
+          color: "#304852",
+   }
 };
