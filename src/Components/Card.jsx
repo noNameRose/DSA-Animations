@@ -8,15 +8,23 @@ export default function Card({color, name, type, difficulty, img}) {
   const card = useRef(null);
   const logoImage = img;
   useGSAP(() => {
+    const tl = gsap.timeline({paused: true}).to(
+      card.current, {
+        boxShadow: "0px 0px 10px 2px grey",
+      }
+    );
     card.current.onpointerenter = () => {
       gsap.to(card.current, {
-        scale: 0.97,
+        y: "-0.5em",
       });
+      tl.play();
     };
     card.current.onpointerleave = () => {
       gsap.to(card.current, {
-        scale: 1,
+        y: 0,
+        boxShadow: ""
       });
+      tl.reverse();
     }
   })
   return (
